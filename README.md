@@ -5,7 +5,7 @@
 
 A dark, gothic, and horror-themed digital portfolio for **GN**, a digital artist specializing in horror lore, monsters, and intricate inking. This experiential website is designed to be an immersive, chilling dive into the artist's psyche.
 
-![Hero Section WebGL Preview](public/assets/images/gothic_background.jpg)
+<img width="1879" height="849" alt="image" src="https://github.com/user-attachments/assets/8a100345-f1b5-437c-8cda-7cd599856b55" />
 
 ## ✨ Key Features
 
