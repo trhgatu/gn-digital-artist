@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🦇 GN. — Art & Soul
 
-## Getting Started
+> **GN VISIONS**
+> _"Draw first for yourself, for half of your soul."_
 
-First, run the development server:
+A dark, gothic, and horror-themed digital portfolio for **GN**, a digital artist specializing in horror lore, monsters, and intricate inking. This experiential website is designed to be an immersive, chilling dive into the artist's psyche.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Hero Section WebGL Preview](public/assets/images/gothic_background.jpg)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Interactive WebGL Flashlight Shader**: A custom Three.js Fragment Shader that cloaks the screen in an inky #050505 void, creating a smooth "flashlight" effect that reveals a gothic underlying texture dynamically trailing the user's mouse in Normalized Device Coordinates (NDC).
+- **Immersive 3D Centerpiece**: A floating, slowly-revolving 3D Ring model (`GothicComponent`) rendered via React Three Fiber, standing as the primary focal point of the Hero section.
+- **Cinematic Post-Processing**: Real-time render effects including Noise, heavy Vignette, and Chromatic Aberration to mimic the grittiness of horror cinema.
+- **Macabre Typography**: Combines modern Swiss geometric utility (`Geist`) with classic, razor-sharp serif elegance (`Cinzel`) using css `mix-blend-mode: difference` for high-contrast visibility.
+- **Silken Smooth Scrolling**: Studio-Freight Lenis combined with GSAP ScrollTrigger ensures an unearthly smooth scroll momentum devoid of native browser chunkiness.
+- **Modern 3-Column Grid**: Carefully engineered structural layout separating the imposing "ART & SOUL" title, the centerpiece Ring, and the mysterious quote into breathing columns.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **3D Engine**: [Three.js](https://threejs.org/) + [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber/) + [@react-three/drei](https://github.com/pmndrs/drei) + [@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)
+- **Animations**: [GSAP](https://gsap.com/) & [Framer Motion](https://www.framer.com/motion/)
+- **Smooth Scroll**: [Lenis](https://lenis.studiofreight.com/)
+- **Code Quality**: ESLint, TypeScript, Prettier
+- **Hooks**: [Husky](https://typicode.github.io/husky/) + lint-staged
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+_Designed & Developed by [Trhgatu](https://thatu.is-a.dev)_
