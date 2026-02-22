@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Environment, PresentationControls } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import {
   EffectComposer,
   Noise,
@@ -12,40 +12,48 @@ import { BlendFunction } from "postprocessing";
 import { GothicComponentScene } from "../../scenes/GothicComponentScene";
 import * as THREE from "three";
 
+import { InteractiveGothicBackground } from "@/features/home/components/InteractiveGothicBackground";
+
 export default function Hero() {
   return (
-    <div className="relative flex min-h-screen w-full bg-[#050505] overflow-hidden selection:bg-red-900 selection:text-white">
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none p-8">
-        <h1
-          className="flex flex-col items-center text-7xl md:text-9xl font-serif text-white uppercase tracking-widest text-center"
-          style={{ mixBlendMode: "difference" }}
-        >
-          <span className="block opacity-90 drop-shadow-2xl">ART &</span>
-          <span
-            className="block opacity-90 font-bold italic"
-            style={{ filter: "blur(1px)" }}
+    <div className="relative flex min-h-screen w-full overflow-hidden selection:bg-red-900 selection:text-white">
+      <div className="absolute inset-0 z-20 grid grid-cols-1 md:grid-cols-3 items-center pointer-events-none p-8 md:p-16 lg:p-24 gap-8">
+        <div className="flex flex-col items-center md:items-start justify-center">
+          <h1
+            className="flex flex-col items-center md:items-start text-7xl md:text-8xl lg:text-9xl font-cinzel text-white uppercase tracking-widest text-left"
+            style={{ mixBlendMode: "difference" }}
           >
-            SOUL
-          </span>
+            <span className="block opacity-90 drop-shadow-2xl">ART &</span>
+            <span
+              className="block opacity-90 font-bold italic"
+              style={{ filter: "blur(1px)" }}
+            >
+              SOUL
+            </span>
+          </h1>
+        </div>
 
-          <span className="block text-xl md:text-2xl mt-8 tracking-[1em] font-sans font-light text-neutral-400">
+        <div className="hidden md:block w-full h-full"></div>
+
+        <div className="flex flex-col items-center md:items-end justify-center text-center md:text-right space-y-12 mt-8 md:mt-0">
+          <span className="block text-xl md:text-2xl tracking-[1em] font-sans font-light text-neutral-400">
             GN VISIONS
           </span>
-        </h1>
-
-        <p className="absolute bottom-12 text-neutral-600 font-serif tracking-[0.2em] text-sm uppercase max-w-md text-center leading-relaxed">
-          &quot;Draw first for yourself,
-          <br />
-          for half of your soul.&quot;
-        </p>
+          <p className="text-neutral-600 font-serif tracking-[0.2em] text-sm uppercase max-w-xs leading-relaxed">
+            &quot;Draw first for yourself,
+            <br />
+            for half of your soul.&quot;
+          </p>
+        </div>
       </div>
 
-      <div className="absolute inset-0 z-10 opacity-90">
+      <div className="absolute inset-0 z-10">
         <Canvas
           camera={{ position: [0, 0, 8], fov: 35 }}
           gl={{ antialias: false }}
         >
-          <color attach="background" args={["#050505"]} />
+          <InteractiveGothicBackground />
+
           <fog attach="fog" args={["#050505", 3, 15]} />
 
           <ambientLight intensity={0.05} />
@@ -65,15 +73,7 @@ export default function Hero() {
             decay={2}
           />
 
-          <PresentationControls
-            global
-            snap
-            rotation={[0, 0.2, 0]}
-            polar={[-Math.PI / 8, Math.PI / 8]}
-            azimuth={[-Math.PI / 5, Math.PI / 5]}
-          >
-            <GothicComponentScene />
-          </PresentationControls>
+          <GothicComponentScene />
 
           <Environment
             files="/hdr/qwantani_night_puresky_2k.hdr"
