@@ -1,0 +1,5 @@
+echo "Checking types..."
+npx tsc --noEmit
+
+echo "Running lint-staged..."
+npx lint-staged
