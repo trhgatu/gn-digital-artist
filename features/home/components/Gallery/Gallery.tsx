@@ -33,7 +33,10 @@ function GalleryRow({
     () => {
       if (!sectionRef.current || !trackRef.current) return;
 
-      const scrollWidth = trackRef.current.scrollWidth - window.innerWidth;
+      const scrollWidth = Math.max(
+        0,
+        trackRef.current.scrollWidth - window.innerWidth,
+      );
 
       if (isReverse) {
         gsap.set(trackRef.current, { x: -scrollWidth });
