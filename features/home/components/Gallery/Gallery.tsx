@@ -98,8 +98,15 @@ function GalleryRow({
         <div className="flex h-[80vh] items-center gap-8 md:gap-16">
           {items.map((project, i) => {
             let heightClass = "h-[60vh]";
-            if (project.size === "large") heightClass = "h-[80vh]";
-            if (project.size === "small") heightClass = "h-[40vh]";
+            let widthClass = "w-[60vw] md:w-[40vw] lg:w-[35vw]";
+            if (project.size === "large") {
+              heightClass = "h-[80vh]";
+              widthClass = "w-[80vw] md:w-[60vw] lg:w-[50vw]";
+            }
+            if (project.size === "small") {
+              heightClass = "h-[40vh]";
+              widthClass = "w-[40vw] md:w-[25vw] lg:w-[20vw]";
+            }
 
             const yOffsets = ["self-start", "self-center", "self-end"];
             const randomAlign = yOffsets[i % yOffsets.length];
@@ -107,20 +114,16 @@ function GalleryRow({
             return (
               <div
                 key={project.id}
-                className={`relative shrink-0 flex flex-col group ${heightClass} ${randomAlign}`}
+                className={`relative shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
               >
-                <div className="relative h-full w-auto overflow-hidden border border-neutral-800/50 shadow-2xl">
-                  {/* Using width={0} height={0} with style auto width and 100% height allows the image to dictate its own aspect ratio width dynamically without cropping */}
+                <div className="relative w-full h-full">
                   <Image
                     src={project.src}
                     alt={project.title}
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ width: "auto", height: "100%" }}
-                    className="object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
+                    fill
+                    className="object-contain object-center grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105 drop-shadow-2xl"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 mix-blend-overlay opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')] pointer-events-none" />
                 </div>
                 <div className="mt-4 flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <span className="text-xs font-sans tracking-[0.2em] text-[#8a0303] uppercase">
