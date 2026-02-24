@@ -38,6 +38,11 @@ function GalleryRow({
         trackRef.current.scrollWidth - window.innerWidth,
       );
 
+      if (scrollWidth === 0) {
+        gsap.set(trackRef.current, { x: 0 });
+        return;
+      }
+
       if (isReverse) {
         gsap.set(trackRef.current, { x: -scrollWidth });
         gsap.to(trackRef.current, {
