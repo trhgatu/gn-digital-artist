@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -122,7 +122,10 @@ function GalleryRow({
                 key={project.id}
                 className={`relative shrink-0 flex flex-col group ${heightClass} ${randomAlign}`}
               >
-                <img
+                <Image
+                  width={600}
+                  height={600}
+                  priority
                   src={project.src}
                   alt={project.title}
                   className="h-full w-auto object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
