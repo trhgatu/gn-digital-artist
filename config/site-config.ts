@@ -15,7 +15,7 @@ export const siteConfig = {
     apple: "/apple-icon.png",
   },
   keywords: [
-    "Horor Design",
+    "Horror Design",
     "Digital Artist",
     "GN",
     "Digital Art",

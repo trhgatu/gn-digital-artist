@@ -21,6 +21,7 @@ export function GothicComponentScene() {
     outMin: number,
     outMax: number,
   ) => {
+    if (inMin === inMax) return outMin;
     return ((val - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
   };
 
