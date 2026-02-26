@@ -125,7 +125,7 @@ function GalleryRow({
                 <Image
                   width={600}
                   height={600}
-                  priority
+                  priority={i === 0}
                   src={project.src}
                   alt={project.title}
                   className="h-full w-auto object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
