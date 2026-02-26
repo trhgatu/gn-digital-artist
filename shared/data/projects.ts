@@ -176,7 +176,7 @@ export const projects: Project[] = [
     id: "vc-1",
     title: "Kantel Board",
     category: "visual-char",
-    src: "/assets/projects/visuals/Kantel board.png",
+    src: "/assets/projects/visuals/kantel-board.png",
     size: "large",
   },
 ];
