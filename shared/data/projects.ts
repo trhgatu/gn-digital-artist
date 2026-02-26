@@ -5,25 +5,16 @@ export interface Project {
   title: string;
   category: ProjectCategory;
   src: string;
-  // size determines the grid span in the asymmetrical layout
   size: "small" | "medium" | "large";
 }
 
 export const projects: Project[] = [
-  // --- DES-GOTHIC (Found 13 files) ---
   {
     id: "dg-1",
-    title: "The Silent Watcher",
+    title: "Fusehime Soryu",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg1.png",
     size: "large",
-  },
-  {
-    id: "dg-2",
-    title: "Blood Ritual",
-    category: "des-gothic",
-    src: "/assets/projects/des-gothic/dg2.png",
-    size: "medium",
   },
   {
     id: "dg-3",
@@ -34,76 +25,61 @@ export const projects: Project[] = [
   },
   {
     id: "dg-4",
-    title: "Hollow Crown",
+    title: "Angeletta",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg4.png",
     size: "large",
   },
   {
     id: "dg-5",
-    title: "Nocturne in D Minor",
+    title: "Yoruki Matsunoa",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg5.png",
     size: "small",
   },
   {
     id: "dg-6",
-    title: "Fallen Seraph",
+    title: "Irae",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg6.png",
     size: "large",
   },
   {
-    id: "dg-7",
-    title: "Veil of Shadows",
-    category: "des-gothic",
-    src: "/assets/projects/des-gothic/dg7.png",
-    size: "medium",
-  },
-  {
     id: "dg-8",
-    title: "Gothic Spire",
+    title: "Darcelle L.Nocturne",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg8.png",
     size: "medium",
   },
   {
-    id: "dg-9",
-    title: "The Abbess",
-    category: "des-gothic",
-    src: "/assets/projects/des-gothic/dg9.png",
-    size: "small",
-  },
-  {
     id: "dg-10",
-    title: "Stained Glass",
+    title: "Pearlie",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg10.jpg",
     size: "medium",
   },
   {
     id: "dg-11",
-    title: "Midnight Gargoyle",
+    title: "Jean Baptiste",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg11.jpg",
     size: "small",
   },
   {
     id: "dg-12",
-    title: "The Crypt",
+    title: "Akuma",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg12.jpg",
     size: "large",
   },
   {
     id: "dg-13",
-    title: "Echoes of the Void",
+    title: "Lysandra Onyx Nocté",
     category: "des-gothic",
     src: "/assets/projects/des-gothic/dg13.jpg",
     size: "medium",
   },
 
-  // --- MONSTER ---
   {
     id: "m-1",
     title: "Asaktra",
@@ -196,7 +172,6 @@ export const projects: Project[] = [
     size: "medium",
   },
 
-  // --- VISUAL & CHAR ---
   {
     id: "vc-1",
     title: "Kantel Board",
