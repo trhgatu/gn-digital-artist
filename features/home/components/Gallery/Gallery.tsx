@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useRef } from "react";
-import Image from "next/image";
+
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -51,7 +52,7 @@ function GalleryRow({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: `+=${scrollWidth}`,
+            end: () => `+=${window.innerHeight * 3}`,
             pin: true,
             scrub: 1,
             invalidateOnRefresh: true,
@@ -64,7 +65,7 @@ function GalleryRow({
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
-            end: `+=${scrollWidth}`,
+            end: () => `+=${window.innerHeight * 3}`,
             pin: true,
             scrub: 1,
             invalidateOnRefresh: true,
@@ -106,14 +107,11 @@ function GalleryRow({
         <div className="flex h-[80vh] items-center gap-8 md:gap-16">
           {items.map((project, i) => {
             let heightClass = "h-[60vh]";
-            let widthClass = "w-[60vw] md:w-[40vw] lg:w-[35vw]";
             if (project.size === "large") {
-              heightClass = "h-[80vh]";
-              widthClass = "w-[80vw] md:w-[60vw] lg:w-[50vw]";
+              heightClass = "h-[70vh]";
             }
             if (project.size === "small") {
               heightClass = "h-[40vh]";
-              widthClass = "w-[40vw] md:w-[25vw] lg:w-[20vw]";
             }
 
             const yOffsets = ["self-start", "self-center", "self-end"];
@@ -122,18 +120,15 @@ function GalleryRow({
             return (
               <div
                 key={project.id}
-                className={`relative shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
+                className={`relative shrink-0 flex flex-col group ${heightClass} ${randomAlign}`}
               >
-                <div className="relative w-full h-full">
-                  <Image
-                    src={project.src}
-                    alt={project.title}
-                    fill
-                    className="object-contain object-center grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105 drop-shadow-2xl"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-                <div className="mt-4 flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <img
+                  src={project.src}
+                  alt={project.title}
+                  className="h-full w-auto object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
+                />
+
+                <div className="mt-4 flex flex-col">
                   <span className="text-xs font-sans tracking-[0.2em] text-[#8a0303] uppercase">
                     {project.category.replace("-", " ")}
                   </span>
