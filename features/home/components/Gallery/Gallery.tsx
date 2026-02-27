@@ -34,43 +34,45 @@ function GalleryRow({
     () => {
       if (!sectionRef.current || !trackRef.current) return;
 
-      const scrollWidth = Math.max(
-        0,
-        trackRef.current.scrollWidth - window.innerWidth,
-      );
-
-      if (scrollWidth === 0) {
-        gsap.set(trackRef.current, { x: 0 });
-        return;
-      }
+      const getScrollWidth = () =>
+        Math.max(0, trackRef.current!.scrollWidth - window.innerWidth);
 
       if (isReverse) {
-        gsap.set(trackRef.current, { x: -scrollWidth });
-        gsap.to(trackRef.current, {
-          x: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: () => `+=${window.innerHeight * 3}`,
-            pin: true,
-            scrub: 1,
-            invalidateOnRefresh: true,
+        gsap.fromTo(
+          trackRef.current,
+          { x: () => -getScrollWidth() },
+          {
+            x: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top top",
+              end: () => `+=${window.innerHeight * 3}`,
+              pin: true,
+              anticipatePin: 1,
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
           },
-        });
+        );
       } else {
-        gsap.to(trackRef.current, {
-          x: -scrollWidth,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: () => `+=${window.innerHeight * 3}`,
-            pin: true,
-            scrub: 1,
-            invalidateOnRefresh: true,
+        gsap.fromTo(
+          trackRef.current,
+          { x: 0 },
+          {
+            x: () => -getScrollWidth(),
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top top",
+              end: () => `+=${window.innerHeight * 3}`,
+              pin: true,
+              anticipatePin: 1,
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
           },
-        });
+        );
       }
     },
     { scope: sectionRef },
@@ -106,12 +108,16 @@ function GalleryRow({
 
         <div className="flex h-[80vh] items-center gap-8 md:gap-16">
           {items.map((project, i) => {
-            let heightClass = "h-[60vh]";
+            // Determine dimensions based on size metadata to give Next Image a bounding box
+            let heightClass = "h-[65vh]";
+            let widthClass = "w-[65vw] md:w-[40vw]"; // Default Medium
             if (project.size === "large") {
-              heightClass = "h-[70vh]";
+              heightClass = "h-[80vh]";
+              widthClass = "w-[85vw] md:w-[50vw]";
             }
             if (project.size === "small") {
-              heightClass = "h-[40vh]";
+              heightClass = "h-[50vh]";
+              widthClass = "w-[50vw] md:w-[30vw]";
             }
 
             const yOffsets = ["self-start", "self-center", "self-end"];
@@ -120,18 +126,21 @@ function GalleryRow({
             return (
               <div
                 key={project.id}
-                className={`relative shrink-0 flex flex-col group ${heightClass} ${randomAlign}`}
+                className={`relative shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
               >
-                <Image
-                  width={600}
-                  height={600}
-                  priority={i === 0}
-                  src={project.src}
-                  alt={project.title}
-                  className="h-full w-auto object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
-                />
+                {/* Image Contaner strictly bounds the next/image fill */}
+                <div className="relative w-full h-full">
+                  <Image
+                    src={project.src}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 80vw, 40vw"
+                    priority={i < 2} // Preload the first few
+                    className="object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
+                  />
+                </div>
 
-                <div className="mt-4 flex flex-col">
+                <div className="mt-4 flex flex-col shrink-0">
                   <span className="text-xs font-sans tracking-[0.2em] text-[#8a0303] uppercase">
                     {project.category.replace("-", " ")}
                   </span>
