@@ -1,39 +1,101 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 export default function Hero() {
+  const containerRef = useRef<HTMLElement>(null);
+  const textTitleRef = useRef<HTMLHeadingElement>(null);
+  const textBgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Entrance Animation
+    const tl = gsap.timeline();
+    tl.fromTo(
+      [textTitleRef.current, textBgRef.current],
+      { opacity: 0, scale: 0.9, filter: "blur(10px)" },
+      {
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 2,
+        ease: "power3.out",
+        stagger: 0.2,
+      },
+    );
+
+    // Mouse Parallax Effect
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      const xPos = (e.clientX / innerWidth - 0.5) * 2; // -1 to +1
+      const yPos = (e.clientY / innerHeight - 0.5) * 2;
+
+      // Move text slightly opposite to mouse for depth
+      gsap.to(textTitleRef.current, {
+        x: xPos * -30,
+        y: yPos * -20,
+        rotationY: xPos * 5,
+        rotationX: yPos * -5,
+        ease: "power2.out",
+        duration: 1,
+      });
+
+      // Background text moves even slower for parallax depth
+      gsap.to(textBgRef.current, {
+        x: xPos * -15,
+        y: yPos * -10,
+        ease: "power2.out",
+        duration: 1.5,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
-    <section className="relative flex min-h-screen w-full overflow-hidden text-white z-10 selection:bg-red-900">
-      <div className="absolute inset-0 z-20 grid grid-cols-1 md:grid-cols-3 items-center pointer-events-none p-8 md:p-16 lg:p-24 gap-8">
-        {/* Left Column: Main Title */}
-        <div className="flex flex-col items-center md:items-start justify-center">
-          <h1
-            className="flex flex-col items-center md:items-start text-7xl md:text-8xl lg:text-9xl font-cinzel text-white uppercase tracking-widest text-left"
-            style={{ mixBlendMode: "difference" }}
-          >
-            <span className="block opacity-90 drop-shadow-2xl">ART &</span>
-            <span
-              className="block opacity-90 font-bold italic"
-              style={{ filter: "blur(1px)" }}
-            >
-              SOUL
-            </span>
-          </h1>
-        </div>
+    <section
+      ref={containerRef}
+      className="relative flex min-h-screen w-full items-center justify-center overflow-hidden text-white z-10 selection:bg-red-900"
+      style={{ perspective: "1000px" }}
+    >
+      <div
+        ref={textTitleRef}
+        className="relative z-20 flex flex-col w-full max-w-7xl mx-auto px-8 md:px-16 mt-[-20vh] md:mt-[-30vh] pointer-events-none"
+        style={{ mixBlendMode: "difference" }}
+      >
+        <span className="text-7xl md:text-[12vw] font-cinzel text-white uppercase tracking-tighter drop-shadow-2xl leading-[0.8] self-start md:ml-[10%]">
+          ART
+        </span>
+        <span className="text-6xl md:text-[8vw] font-serif italic text-white/90 lowercase tracking-widest drop-shadow-xl self-center mt-[-6vh] z-10">
+          &
+        </span>
+        <span
+          className="text-8xl md:text-[12vw] font-cinzel font-black italic uppercase tracking-tighter text-transparent leading-[0.8] self-end mt-[-2vh]"
+          style={{
+            WebkitTextStroke: "2px rgba(255,255,255,0.9)",
+            filter: "drop-shadow(0 0 20px rgba(200,0,0,0.3))",
+          }}
+        >
+          SOUL
+        </span>
+      </div>
 
-        {/* Center Column: Reserved for 3D Ring */}
-        <div className="hidden md:block w-full h-full"></div>
-
-        {/* Right Column: Subtitle & Quote */}
-        <div className="flex flex-col items-center md:items-end justify-center text-center md:text-right space-y-12 mt-8 md:mt-0">
-          <span className="block text-xl md:text-2xl tracking-[1em] font-sans font-light text-neutral-400">
-            GN VISIONS
+      <div className="absolute inset-x-8 bottom-8 md:bottom-12 flex flex-row justify-between items-end pointer-events-none z-30 opacity-70">
+        <div className="flex flex-col space-y-2">
+          <span className="text-xs tracking-[0.5em] font-sans uppercase text-neutral-400">
+            Digital Artist
           </span>
-          <p className="text-neutral-600 font-serif tracking-[0.2em] text-sm uppercase max-w-xs leading-relaxed">
-            &quot;Draw first for yourself,
-            <br />
-            for half of your soul.&quot;
-          </p>
+          <span className="text-sm font-serif italic text-red-800">
+            Est. 2026
+          </span>
         </div>
+
+        <p className="text-right text-neutral-500 font-serif tracking-[0.2em] text-[10px] md:text-sm uppercase max-w-[200px] md:max-w-xs leading-relaxed">
+          &quot;Draw first for yourself,
+          <br />
+          for half of your soul.&quot;
+        </p>
       </div>
     </section>
   );

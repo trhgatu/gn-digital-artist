@@ -20,18 +20,22 @@ void main() {
     float dist = distance(vUv * aspect, uMouse * aspect);
     float mask = smoothstep(0.15, 0.4, dist);
 
-    // Fade mask out as user scrolls down
-    // clamp uScroll between 0.0 and 1.0, and maybe accelerate the fade
-    float fade = clamp(1.0 - (uScroll * 2.0), 0.0, 1.0);
-    mask = mask + (1.0 - fade); // When fade is 0, mask becomes 1.0 (fully covered by bgColor)
-    mask = clamp(mask, 0.0, 1.0);
+    // Calculate fade based on scroll progress (0.0 to 0.166 represents Hero section)
+    // As uScroll approaches 0.166, fade goes from 0.0 to 1.0
+    float fade = clamp(uScroll * 6.0, 0.0, 1.0);
+
+    // As it fades, let the mask overtake the whole screen
+    mask = clamp(mask + fade, 0.0, 1.0);
 
     vec4 bgColor = vec4(0.0196, 0.0196, 0.0196, 1.0);
 
     float gray = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
     vec4 horrorTex = vec4(vec3(gray) * 0.4, 1.0);
 
-    gl_FragColor = mix(horrorTex, bgColor, mask);
+    vec3 finalColor = mix(horrorTex, bgColor, mask).rgb;
+
+    // Fade the entire shader opacity out as we scroll down into Gallery
+    gl_FragColor = vec4(finalColor, 1.0 - fade);
 }
 `;
 
@@ -50,7 +54,20 @@ export const InteractiveGothicBackground = () => {
 
   const texture = useTexture("/assets/images/gothic_background.jpg");
 
-  const scrollProgress = useRef(0);
+  // Determine initial scroll progress so the shader doesn't flash a 0.0 state on refresh
+  const initialProgress =
+    typeof window !== "undefined"
+      ? Math.max(
+          Math.min(
+            window.scrollY /
+              (document.documentElement.scrollHeight - window.innerHeight),
+            1,
+          ),
+          0,
+        )
+      : 0;
+
+  const scrollProgress = useRef(initialProgress || 0);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -70,16 +87,15 @@ export const InteractiveGothicBackground = () => {
       uTexture: { value: texture },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uResolution: { value: new THREE.Vector2(size.width, size.height) },
-      uScroll: { value: 0.0 },
+      uScroll: { value: initialProgress || 0 }, // Do not read ref.current during render
     }),
-    [texture, size],
+    [texture, size, initialProgress],
   );
 
   const currentMouse = useRef(new THREE.Vector2(0.5, 0.5));
 
   useFrame((state) => {
     if (shaderRef.current) {
-      // Smoothly update mouse
       const targetX = (state.pointer.x + 1.0) / 2.0;
       const targetY = (state.pointer.y + 1.0) / 2.0;
       currentMouse.current.lerpVectors(

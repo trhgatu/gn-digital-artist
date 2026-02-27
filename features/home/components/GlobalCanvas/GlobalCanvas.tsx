@@ -68,7 +68,6 @@ export function GlobalCanvas() {
           </Suspense>
         </Canvas>
       </div>
-      <div className="pointer-events-none absolute inset-0 z-30 opacity-[0.03] mix-blend-overlay bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" />
     </div>
   );
 }
