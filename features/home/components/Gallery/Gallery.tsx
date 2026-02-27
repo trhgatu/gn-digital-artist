@@ -111,13 +111,16 @@ function GalleryRow({
             // Determine dimensions based on size metadata to give Next Image a bounding box
             let heightClass = "h-[65vh]";
             let widthClass = "w-[65vw] md:w-[40vw]"; // Default Medium
+            let sizesStr = "(max-width: 768px) 65vw, 40vw"; // Default Medium Sizes
             if (project.size === "large") {
               heightClass = "h-[80vh]";
               widthClass = "w-[85vw] md:w-[50vw]";
+              sizesStr = "(max-width: 768px) 85vw, 50vw";
             }
             if (project.size === "small") {
               heightClass = "h-[50vh]";
               widthClass = "w-[50vw] md:w-[30vw]";
+              sizesStr = "(max-width: 768px) 50vw, 30vw";
             }
 
             const yOffsets = ["self-start", "self-center", "self-end"];
@@ -134,7 +137,7 @@ function GalleryRow({
                     src={project.src}
                     alt={project.title}
                     fill
-                    sizes="(max-width: 768px) 80vw, 40vw"
+                    sizes={sizesStr}
                     priority={i < 2} // Preload the first few
                     className="object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
                   />
