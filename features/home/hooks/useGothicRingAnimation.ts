@@ -93,10 +93,12 @@ export function useGothicRingAnimation(
           ? Math.min(Math.max(window.scrollY / maxScroll, 0), 1)
           : 0;
     };
-    // Set initial value
-    updateScroll();
     window.addEventListener("scroll", updateScroll, { passive: true });
-    return () => window.removeEventListener("scroll", updateScroll);
+    window.addEventListener("resize", updateScroll);
+    return () => {
+      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("resize", updateScroll);
+    };
   }, []);
 
   useFrame((state) => {
@@ -105,7 +107,6 @@ export function useGothicRingAnimation(
     const p = scrollProgressRef.current;
 
     let targetX = RING_STAGES.HERO.X;
-    // Subtle vertical floating effect based on time
     let targetY =
       RING_STAGES.HERO.Y + Math.sin(state.clock.elapsedTime * 0.8) * 0.05;
     let targetZ = RING_STAGES.HERO.Z;
