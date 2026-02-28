@@ -32,34 +32,34 @@ export const RING_STAGES = {
   },
   GALLERY_BASE: {
     Y: 2,
-    Z: -2,
+    Z: -4,
     SCALE: 0.6,
     ROT_Z: Math.PI / 6,
   },
   GALLERY_ROW_1_LEFT: {
     X: -2.5,
-    Z: -1,
+    Z: -3,
   },
   GALLERY_ROW_1_RIGHT: {
     X: 3.5,
-    Z: -3,
+    Z: -5,
   },
   GALLERY_ROW_2_LEFT: {
     X: -3.5,
-    Z: -3,
+    Z: -5,
   },
   GALLERY_ROW_3_LEFT: {
     X: -3.5,
-    Z: -3,
+    Z: -5,
   },
   GALLERY_ROW_3_CENTER: {
     X: -2,
-    Z: -1,
+    Z: -3,
   },
   PACT: {
     X: 0,
     Y: 0,
-    Z: -1,
+    Z: -3,
     SCALE: 1.0,
     ROT_X: Math.PI / 12,
     ROT_Z: 0,

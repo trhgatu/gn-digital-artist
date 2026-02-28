@@ -14,8 +14,7 @@ export default function GalleryBackground() {
 
     if (!containerRef.current) return;
 
-    // Start completely invisible (opacity: 0) at the top of the page.
-    // Fade in to opacity: 1 gradually as we scroll down into the Gallery.
+    // Fade IN: invisible at top → fully visible after 1 screen scroll
     gsap.fromTo(
       containerRef.current,
       { opacity: 0 },
@@ -25,11 +24,31 @@ export default function GalleryBackground() {
         scrollTrigger: {
           trigger: document.body,
           start: "top top",
-          end: `+=${window.innerHeight * 1}`, // Fade in over the first screen height
+          end: `+=${window.innerHeight * 1}`,
           scrub: true,
         },
       },
     );
+
+    // Fade OUT: fade back to invisible when the Pact section enters the viewport
+    const pactEl = document.querySelector("#pact");
+    if (pactEl) {
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: pactEl,
+            start: "top 80%",
+            end: "top 20%",
+            scrub: true,
+            refreshPriority: -1, // Recalculate AFTER Gallery pins inject their spacers
+          },
+        },
+      );
+    }
   }, []);
 
   return (
