@@ -112,7 +112,6 @@ export function useGothicRingAnimation(
     let targetZ = RING_STAGES.HERO.Z;
     let targetScale = RING_STAGES.HERO.SCALE;
 
-    // Subtle tilting float instead of continuous spin
     let targetRotX =
       RING_STAGES.HERO.ROT_X + Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
 

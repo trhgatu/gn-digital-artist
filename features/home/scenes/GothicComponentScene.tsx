@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { useGothicRingAnimation } from "../hooks/useGothicRingAnimation";
@@ -9,7 +9,6 @@ export function GothicComponentScene() {
 
   const { nodes, materials } = useGLTF("/models/gothic_ring.glb");
 
-  // Memoize the fallback material so it's only allocated once, not on every re-render
   const fallbackMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
@@ -19,6 +18,9 @@ export function GothicComponentScene() {
       }),
     [],
   );
+  useEffect(() => {
+    return () => fallbackMaterial.dispose();
+  }, [fallbackMaterial]);
 
   return (
     <group ref={gothicCompRef} dispose={null}>
