@@ -34,6 +34,9 @@ function GalleryRow({
     () => {
       if (!sectionRef.current || !trackRef.current) return;
 
+      // Unhide the track once GSAP is ready to prevent FOUC
+      gsap.set(trackRef.current, { autoAlpha: 1 });
+
       const getScrollWidth = () =>
         Math.max(0, trackRef.current!.scrollWidth - window.innerWidth);
 
@@ -85,14 +88,14 @@ function GalleryRow({
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen w-full bg-[#050505] overflow-hidden text-white border-t border-neutral-900/50"
+      className="relative h-screen w-full bg-transparent overflow-hidden"
     >
       <div
         ref={trackRef}
-        className={`flex h-full w-max items-center ${trackPadding} gap-16 md:gap-32`}
+        className={`invisible flex h-full w-max items-center ${trackPadding} gap-16 md:gap-32`}
       >
         {!isReverse && (
-          <div className="flex flex-col justify-center h-full w-[80vw] md:w-[40vw] shrink-0">
+          <div className="relative z-30 flex flex-col justify-center h-full w-[80vw] md:w-[40vw] shrink-0">
             <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
               {subtitle}
             </h2>
@@ -108,10 +111,9 @@ function GalleryRow({
 
         <div className="flex h-[80vh] items-center gap-8 md:gap-16">
           {items.map((project, i) => {
-            // Determine dimensions based on size metadata to give Next Image a bounding box
             let heightClass = "h-[65vh]";
-            let widthClass = "w-[65vw] md:w-[40vw]"; // Default Medium
-            let sizesStr = "(max-width: 768px) 65vw, 40vw"; // Default Medium Sizes
+            let widthClass = "w-[65vw] md:w-[40vw]";
+            let sizesStr = "(max-width: 768px) 65vw, 40vw";
             if (project.size === "large") {
               heightClass = "h-[80vh]";
               widthClass = "w-[85vw] md:w-[50vw]";
@@ -129,16 +131,15 @@ function GalleryRow({
             return (
               <div
                 key={project.id}
-                className={`relative shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
+                className={`relative z-30 shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
               >
-                {/* Image Contaner strictly bounds the next/image fill */}
                 <div className="relative w-full h-full">
                   <Image
                     src={project.src}
                     alt={project.title}
                     fill
                     sizes={sizesStr}
-                    priority={i < 2} // Preload the first few
+                    priority={i < 2}
                     className="object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
                   />
                 </div>
@@ -157,7 +158,7 @@ function GalleryRow({
         </div>
 
         {isReverse && (
-          <div className="flex flex-col items-end text-right justify-center h-full w-[80vw] md:w-[40vw] shrink-0">
+          <div className="relative z-30 flex flex-col items-end text-right justify-center h-full w-[80vw] md:w-[40vw] shrink-0">
             <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
               {subtitle}
             </h2>
@@ -179,7 +180,7 @@ function GalleryRow({
 
 export default function Gallery() {
   return (
-    <div className="relative w-full bg-[#050505] selection:bg-red-900 leading-normal">
+    <div className="relative z-0 w-full bg-transparent selection:bg-red-900 leading-normal">
       <GalleryRow
         title="Des Gothic"
         subtitle="Chapter I"
