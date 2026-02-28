@@ -5,14 +5,13 @@ import gsap from "gsap";
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
-  const textTitleRef = useRef<HTMLHeadingElement>(null);
-  const textBgRef = useRef<HTMLDivElement>(null);
+  const textTitleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Entrance Animation
+    // Entrance Animation - only animate textTitleRef (textBgRef no longer exists in JSX)
     const tl = gsap.timeline();
     tl.fromTo(
-      [textTitleRef.current, textBgRef.current],
+      textTitleRef.current,
       { opacity: 0, scale: 0.9, filter: "blur(10px)" },
       {
         opacity: 1,
@@ -20,33 +19,36 @@ export default function Hero() {
         filter: "blur(0px)",
         duration: 2,
         ease: "power3.out",
-        stagger: 0.2,
       },
     );
 
-    // Mouse Parallax Effect
+    // Mouse Parallax Effect — use quickTo to avoid creating fresh tweens per event
+    const qX = gsap.quickTo(textTitleRef.current, "x", {
+      ease: "power2.out",
+      duration: 1,
+    });
+    const qY = gsap.quickTo(textTitleRef.current, "y", {
+      ease: "power2.out",
+      duration: 1,
+    });
+    const qRotY = gsap.quickTo(textTitleRef.current, "rotationY", {
+      ease: "power2.out",
+      duration: 1,
+    });
+    const qRotX = gsap.quickTo(textTitleRef.current, "rotationX", {
+      ease: "power2.out",
+      duration: 1,
+    });
+
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
       const xPos = (e.clientX / innerWidth - 0.5) * 2; // -1 to +1
       const yPos = (e.clientY / innerHeight - 0.5) * 2;
 
-      // Move text slightly opposite to mouse for depth
-      gsap.to(textTitleRef.current, {
-        x: xPos * -30,
-        y: yPos * -20,
-        rotationY: xPos * 5,
-        rotationX: yPos * -5,
-        ease: "power2.out",
-        duration: 1,
-      });
-
-      // Background text moves even slower for parallax depth
-      gsap.to(textBgRef.current, {
-        x: xPos * -15,
-        y: yPos * -10,
-        ease: "power2.out",
-        duration: 1.5,
-      });
+      qX(xPos * -30);
+      qY(yPos * -20);
+      qRotY(xPos * 5);
+      qRotX(yPos * -5);
     };
 
     window.addEventListener("mousemove", handleMouseMove);

@@ -54,17 +54,15 @@ export const InteractiveGothicBackground = () => {
 
   const texture = useTexture("/assets/images/gothic_background.jpg");
 
-  // Determine initial scroll progress so the shader doesn't flash a 0.0 state on refresh
+  // Guard against zero denominator on non-scrollable pages
   const initialProgress =
     typeof window !== "undefined"
-      ? Math.max(
-          Math.min(
-            window.scrollY /
-              (document.documentElement.scrollHeight - window.innerHeight),
-            1,
-          ),
-          0,
-        )
+      ? (() => {
+          const maxScroll =
+            document.documentElement.scrollHeight - window.innerHeight;
+          if (maxScroll <= 0) return 0;
+          return Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+        })()
       : 0;
 
   const scrollProgress = useRef(initialProgress || 0);
@@ -122,7 +120,7 @@ export const InteractiveGothicBackground = () => {
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         uniforms={uniforms}
-        transparent={false}
+        transparent={true}
         depthWrite={false}
         depthTest={true}
       />

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -80,13 +81,28 @@ export const SCROLL_MARKERS = {
 export function useGothicRingAnimation(
   gothicCompRef: React.RefObject<THREE.Group<THREE.Object3DEventMap> | null>,
 ) {
+  // Cache scroll progress outside useFrame to avoid per-frame DOM reads
+  const scrollProgressRef = useRef(0);
+
+  useEffect(() => {
+    const updateScroll = () => {
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgressRef.current =
+        maxScroll > 0
+          ? Math.min(Math.max(window.scrollY / maxScroll, 0), 1)
+          : 0;
+    };
+    // Set initial value
+    updateScroll();
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    return () => window.removeEventListener("scroll", updateScroll);
+  }, []);
+
   useFrame((state) => {
     if (!gothicCompRef.current) return;
 
-    const scrollY = window.scrollY;
-    const maxScroll =
-      document.documentElement.scrollHeight - window.innerHeight;
-    const p = maxScroll > 0 ? Math.min(Math.max(scrollY / maxScroll, 0), 1) : 0;
+    const p = scrollProgressRef.current;
 
     let targetX = RING_STAGES.HERO.X;
     // Subtle vertical floating effect based on time
