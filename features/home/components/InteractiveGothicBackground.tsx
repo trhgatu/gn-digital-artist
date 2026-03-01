@@ -120,7 +120,7 @@ export const InteractiveGothicBackground = () => {
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         uniforms={uniforms}
-        transparent={true}
+        transparent={false}
         depthWrite={false}
         depthTest={true}
       />

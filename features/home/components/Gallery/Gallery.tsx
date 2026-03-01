@@ -34,7 +34,6 @@ function GalleryRow({
     () => {
       if (!sectionRef.current || !trackRef.current) return;
 
-      // Unhide the track once GSAP is ready to prevent FOUC
       gsap.set(trackRef.current, { autoAlpha: 1 });
 
       const getScrollWidth = () =>
@@ -90,6 +89,18 @@ function GalleryRow({
       ref={sectionRef}
       className="relative h-screen w-full bg-transparent overflow-hidden"
     >
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vh] h-[100vw] rotate-90 opacity-10 mix-blend-screen">
+          <Image
+            src="/assets/images/gothic-background.jpg"
+            alt="Gothic Texture"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-[#8a0303]/5 mix-blend-multiply" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-[#8a0303]/15 blur-[120px] rounded-full mix-blend-screen" />
+      </div>
       <div
         ref={trackRef}
         className={`invisible flex h-full w-max items-center ${trackPadding} gap-16 md:gap-32`}
@@ -179,8 +190,13 @@ function GalleryRow({
 }
 
 export default function Gallery() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="relative z-0 w-full bg-transparent selection:bg-red-900 leading-normal">
+    <div
+      ref={wrapperRef}
+      className="relative z-0 w-full bg-transparent selection:bg-red-900 leading-normal"
+    >
       <GalleryRow
         title="Des Gothic"
         subtitle="Chapter I"

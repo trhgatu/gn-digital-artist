@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import {
@@ -16,12 +16,26 @@ import { GothicComponentScene } from "../../scenes/GothicComponentScene";
 import { InteractiveGothicBackground } from "../InteractiveGothicBackground";
 
 export function GlobalCanvas() {
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="fixed inset-0 z-0">
-      <div className="absolute inset-0 z-10 pointer-events-none">
+      {/* Start invisible; fade in after R3F is ready to prevent abrupt flash on init */}
+      <div
+        ref={canvasWrapperRef}
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{ opacity: 0, transition: "opacity 0.4s ease" }}
+      >
         <Canvas
           camera={{ position: [0, 0, 8], fov: 35 }}
           gl={{ antialias: false }}
+          onCreated={({ gl }) => {
+            gl.setClearColor(new THREE.Color("#050505"), 1);
+            // Reveal the canvas after WebGL context is ready, preventing flash
+            if (canvasWrapperRef.current) {
+              canvasWrapperRef.current.style.opacity = "1";
+            }
+          }}
           eventSource={
             typeof window !== "undefined" ? document.body : undefined
           }
