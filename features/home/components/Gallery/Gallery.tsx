@@ -95,6 +95,7 @@ function GalleryRow({
             src="/assets/images/gothic-background.jpg"
             alt="Gothic Texture"
             fill
+            sizes="100vw"
             className="object-cover"
           />
         </div>

@@ -54,7 +54,6 @@ export const InteractiveGothicBackground = () => {
 
   const texture = useTexture("/assets/images/gothic_background.jpg");
 
-  // Guard against zero denominator on non-scrollable pages
   const initialProgress =
     typeof window !== "undefined"
       ? (() => {
@@ -85,7 +84,7 @@ export const InteractiveGothicBackground = () => {
       uTexture: { value: texture },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uResolution: { value: new THREE.Vector2(size.width, size.height) },
-      uScroll: { value: initialProgress || 0 }, // Do not read ref.current during render
+      uScroll: { value: initialProgress || 0 },
     }),
     [texture, size, initialProgress],
   );
@@ -120,7 +119,7 @@ export const InteractiveGothicBackground = () => {
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         uniforms={uniforms}
-        transparent={false}
+        transparent={true}
         depthWrite={false}
         depthTest={true}
       />
