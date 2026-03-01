@@ -95,7 +95,7 @@ export default function Pact() {
     <section
       ref={sectionRef}
       id="pact"
-      className="relative min-h-screen w-full bg-transparent py-32 px-8 lg:px-16 flex flex-col items-center justify-center border-t border-neutral-900/80"
+      className="relative min-h-screen w-full bg-transparent py-32 px-8 lg:px-16 flex flex-col items-center justify-center"
     >
       <div className="text-center mb-24 max-w-2xl relative z-10">
         <h2 className="text-sm font-sans tracking-[0.4em] text-[#8a0303] uppercase mb-6">

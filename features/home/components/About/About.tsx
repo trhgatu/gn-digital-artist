@@ -61,7 +61,7 @@ export default function About() {
         >
           <div className="relative w-full h-[80%] max-w-sm ml-auto mr-12 overflow-hidden border border-neutral-800/50 shadow-2xl">
             <Image
-              src="/assets/images/avt.jfif"
+              src="/assets/images/avt.png"
               alt="The Architect of Nightmares"
               fill
               className="object-cover object-center grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out hover:scale-105"
