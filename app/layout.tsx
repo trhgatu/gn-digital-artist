@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/shared/components/providers";
 import "./globals.css";
 import { LenisScroll } from "@/shared/components/anims";
 import { siteConfig } from "@/config/site-config";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -78,6 +79,7 @@ export default function RootLayout({
         >
           <LenisScroll />
           {children}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

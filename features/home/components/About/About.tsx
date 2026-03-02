@@ -100,8 +100,6 @@ export default function About() {
               form to our deepest, most primal fears.
             </p>
           </div>
-
-          {/* Tools row */}
           {(() => {
             const TOOLS = [
               { src: "/assets/icons/medibang.svg", alt: "MediBang Paint" },
