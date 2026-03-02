@@ -102,32 +102,36 @@ export default function About() {
           </div>
 
           {/* Tools row */}
-          <div className="pt-2">
-            <div className="w-12 h-px bg-neutral-700 mb-4" />
-            <p className="text-[10px] tracking-[0.4em] text-neutral-400 uppercase mb-3 font-sans">
-              Tools
-            </p>
-            <div className="flex items-center gap-5">
-              <div className="relative w-8 h-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
-                <Image
-                  sizes="32px"
-                  src="/assets/icons/medibang.svg"
-                  alt="MediBang Paint"
-                  fill
-                  className="object-contain invert"
-                />
+          {(() => {
+            const TOOLS = [
+              { src: "/assets/icons/medibang.svg", alt: "MediBang Paint" },
+              { src: "/assets/icons/pts.svg", alt: "Photoshop" },
+            ];
+            return (
+              <div className="pt-2">
+                <div className="w-12 h-px bg-neutral-700 mb-4" />
+                <p className="text-[10px] tracking-[0.4em] text-neutral-400 uppercase mb-3 font-sans">
+                  Tools
+                </p>
+                <div className="flex items-center gap-5">
+                  {TOOLS.map((tool) => (
+                    <div
+                      key={tool.src}
+                      className="relative w-8 h-8 opacity-70 hover:opacity-100 transition-opacity duration-300"
+                    >
+                      <Image
+                        src={tool.src}
+                        alt={tool.alt}
+                        fill
+                        sizes="32px"
+                        className="object-contain invert"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="relative w-8 h-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
-                <Image
-                  sizes="32px"
-                  src="/assets/icons/pts.svg"
-                  alt="Photoshop"
-                  fill
-                  className="object-contain invert"
-                />
-              </div>
-            </div>
-          </div>
+            );
+          })()}
         </div>
       </div>
     </section>
