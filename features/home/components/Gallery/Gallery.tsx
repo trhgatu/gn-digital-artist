@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 
 import gsap from "gsap";
@@ -29,6 +29,35 @@ function GalleryRow({
 }: GalleryRowProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLElement[]>([]);
+
+  const updateGlow = () => {
+    if (cardsRef.current.length === 0) return;
+    const cards = cardsRef.current;
+    const vCenter = window.innerWidth / 2;
+    const threshold = window.innerWidth * 0.35;
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const dist = Math.abs(cardCenter - vCenter);
+      if (dist < threshold) {
+        card.classList.add("card-glow");
+      } else {
+        card.classList.remove("card-glow");
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (cardContainerRef.current) {
+      cardsRef.current = Array.from(
+        cardContainerRef.current.querySelectorAll<HTMLElement>(".gallery-card"),
+      );
+      // Init glow immediately
+      updateGlow();
+    }
+  }, [items]);
 
   useGSAP(
     () => {
@@ -54,6 +83,7 @@ function GalleryRow({
               anticipatePin: 1,
               scrub: 1,
               invalidateOnRefresh: true,
+              onUpdate: updateGlow,
             },
           },
         );
@@ -72,6 +102,7 @@ function GalleryRow({
               anticipatePin: 1,
               scrub: 1,
               invalidateOnRefresh: true,
+              onUpdate: updateGlow,
             },
           },
         );
@@ -89,6 +120,19 @@ function GalleryRow({
       ref={sectionRef}
       className="relative h-screen w-full bg-transparent overflow-hidden"
     >
+      <style>{`
+        .card-image-wrap {
+          transition: filter 0.7s ease;
+        }
+        .card-glow .card-image-wrap {
+          filter:
+            drop-shadow(0 0 4px rgba(255, 0, 0, 0.8))    /* Tight hot core */
+            drop-shadow(0 0 12px rgba(161, 0, 0, 0.7))   /* Medium spread */
+            drop-shadow(0 0 28px rgba(102, 0, 0, 0.5))   /* Wide diffusion */
+            drop-shadow(0 0 50px rgba(138, 3, 3, 0.3))   /* Very wide base */
+            drop-shadow(0 0 80px rgba(138, 3, 3, 0.15)); /* Ambient soft glow */
+        }
+      `}</style>
       <div className="absolute inset-0 -z-10 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vh] h-[100vw] rotate-90 opacity-10 mix-blend-screen">
           <Image
@@ -121,20 +165,23 @@ function GalleryRow({
           </div>
         )}
 
-        <div className="flex h-[80vh] items-center gap-8 md:gap-16">
+        <div
+          ref={cardContainerRef}
+          className="flex h-[90vh] items-center gap-8 md:gap-24"
+        >
           {items.map((project, i) => {
-            let heightClass = "h-[65vh]";
-            let widthClass = "w-[65vw] md:w-[40vw]";
-            let sizesStr = "(max-width: 768px) 65vw, 40vw";
+            let heightClass = "h-[75vh]";
+            let widthClass = "w-[75vw] md:w-[50vw]";
+            let sizesStr = "(max-width: 768px) 75vw, 50vw";
             if (project.size === "large") {
-              heightClass = "h-[80vh]";
-              widthClass = "w-[85vw] md:w-[50vw]";
-              sizesStr = "(max-width: 768px) 85vw, 50vw";
+              heightClass = "h-[88vh]";
+              widthClass = "w-[90vw] md:w-[60vw]";
+              sizesStr = "(max-width: 768px) 90vw, 60vw";
             }
             if (project.size === "small") {
-              heightClass = "h-[50vh]";
-              widthClass = "w-[50vw] md:w-[30vw]";
-              sizesStr = "(max-width: 768px) 50vw, 30vw";
+              heightClass = "h-[65vh]";
+              widthClass = "w-[60vw] md:w-[38vw]";
+              sizesStr = "(max-width: 768px) 60vw, 38vw";
             }
 
             const yOffsets = ["self-start", "self-center", "self-end"];
@@ -143,9 +190,9 @@ function GalleryRow({
             return (
               <div
                 key={project.id}
-                className={`relative z-30 shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
+                className={`gallery-card relative z-30 shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
               >
-                <div className="relative w-full h-full">
+                <div className="card-image-wrap relative w-full h-full">
                   <Image
                     src={project.src}
                     alt={project.title}
