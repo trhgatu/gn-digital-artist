@@ -159,7 +159,6 @@ export function useGothicRingAnimation(
       targetY = 4;
       targetZ = -2;
     } else {
-      // Appear early by starting the transition slightly before Gallery ends
       let localP = mapRange(
         p,
         SCROLL_MARKERS.GALLERY_ROW_3_END - 0.05,
