@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 
 import gsap from "gsap";
@@ -30,11 +30,11 @@ function GalleryRow({
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const cardContainerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLElement[]>([]);
 
   const updateGlow = () => {
-    if (!cardContainerRef.current) return;
-    const cards =
-      cardContainerRef.current.querySelectorAll<HTMLElement>(".gallery-card");
+    if (cardsRef.current.length === 0) return;
+    const cards = cardsRef.current;
     const vCenter = window.innerWidth / 2;
     const threshold = window.innerWidth * 0.35;
     cards.forEach((card) => {
@@ -48,6 +48,16 @@ function GalleryRow({
       }
     });
   };
+
+  useEffect(() => {
+    if (cardContainerRef.current) {
+      cardsRef.current = Array.from(
+        cardContainerRef.current.querySelectorAll<HTMLElement>(".gallery-card"),
+      );
+      // Init glow immediately
+      updateGlow();
+    }
+  }, [items]);
 
   useGSAP(
     () => {
