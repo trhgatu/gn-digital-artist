@@ -31,7 +31,6 @@ export function GlobalCanvas() {
           gl={{ antialias: false }}
           onCreated={({ gl }) => {
             gl.setClearColor(new THREE.Color("#050505"), 1);
-            // Reveal the canvas after WebGL context is ready, preventing flash
             if (canvasWrapperRef.current) {
               canvasWrapperRef.current.style.opacity = "1";
             }

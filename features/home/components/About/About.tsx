@@ -100,6 +100,32 @@ export default function About() {
               form to our deepest, most primal fears.
             </p>
           </div>
+
+          {/* Tools row */}
+          <div className="pt-2">
+            <div className="w-12 h-px bg-neutral-700 mb-4" />
+            <p className="text-[10px] tracking-[0.4em] text-neutral-400 uppercase mb-3 font-sans">
+              Tools
+            </p>
+            <div className="flex items-center gap-5">
+              <div className="relative w-8 h-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <Image
+                  src="/assets/icons/medibang.svg"
+                  alt="MediBang Paint"
+                  fill
+                  className="object-contain invert"
+                />
+              </div>
+              <div className="relative w-8 h-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <Image
+                  src="/assets/icons/pts.svg"
+                  alt="Photoshop"
+                  fill
+                  className="object-contain invert"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
