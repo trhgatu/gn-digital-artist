@@ -110,6 +110,7 @@ export default function About() {
             <div className="flex items-center gap-5">
               <div className="relative w-8 h-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
                 <Image
+                  sizes="32px"
                   src="/assets/icons/medibang.svg"
                   alt="MediBang Paint"
                   fill
@@ -118,6 +119,7 @@ export default function About() {
               </div>
               <div className="relative w-8 h-8 opacity-70 hover:opacity-100 transition-opacity duration-300">
                 <Image
+                  sizes="32px"
                   src="/assets/icons/pts.svg"
                   alt="Photoshop"
                   fill
