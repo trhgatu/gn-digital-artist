@@ -11,16 +11,10 @@ export const Header = () => {
       </Link>
       <nav className="flex gap-8 font-sans text-xs tracking-[0.2em] uppercase pointer-events-auto">
         <Link
-          href="/"
+          href="/works"
           className="text-neutral-400 hover:text-white transition-colors"
         >
           Works
-        </Link>
-        <Link
-          href="#about"
-          className="text-neutral-400 hover:text-white transition-colors"
-        >
-          About
         </Link>
         <Link
           href="#contact"

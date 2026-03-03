@@ -81,7 +81,6 @@ export const SCROLL_MARKERS = {
 export function useGothicRingAnimation(
   gothicCompRef: React.RefObject<THREE.Group<THREE.Object3DEventMap> | null>,
 ) {
-  // Cache scroll progress outside useFrame to avoid per-frame DOM reads
   const scrollProgressRef = useRef(0);
 
   useEffect(() => {
