@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -82,8 +81,6 @@ export const SCROLL_MARKERS = {
 export function useGothicRingAnimation(
   gothicCompRef: React.RefObject<THREE.Group<THREE.Object3DEventMap> | null>,
 ) {
-  const pathname = usePathname();
-  // Cache scroll progress outside useFrame to avoid per-frame DOM reads
   const scrollProgressRef = useRef(0);
 
   useEffect(() => {
@@ -119,50 +116,6 @@ export function useGothicRingAnimation(
 
     let targetRotY = RING_STAGES.HERO.ROT_Y;
     let targetRotZ = RING_STAGES.HERO.ROT_Z;
-
-    // Handle Projects page logic
-    if (pathname === "/projects") {
-      // Scale down gently on scroll to avoid conflicting with the gallery
-      if (p > 0.05) {
-        let localP = mapRange(p, 0.05, 0.2, 0, 1);
-        localP = THREE.MathUtils.clamp(localP, 0, 1);
-        const smoothP = THREE.MathUtils.smoothstep(localP, 0, 1);
-
-        targetScale = THREE.MathUtils.lerp(RING_STAGES.HERO.SCALE, 0, smoothP);
-        targetY = THREE.MathUtils.lerp(targetY, targetY + 2, smoothP);
-      }
-
-      gothicCompRef.current.position.x = THREE.MathUtils.lerp(
-        gothicCompRef.current.position.x,
-        targetX,
-        0.08,
-      );
-      gothicCompRef.current.position.y = THREE.MathUtils.lerp(
-        gothicCompRef.current.position.y,
-        targetY,
-        0.08,
-      );
-      gothicCompRef.current.position.z = THREE.MathUtils.lerp(
-        gothicCompRef.current.position.z,
-        targetZ,
-        0.08,
-      );
-      gothicCompRef.current.scale.setScalar(
-        THREE.MathUtils.lerp(gothicCompRef.current.scale.x, targetScale, 0.05),
-      );
-      gothicCompRef.current.rotation.x = targetRotX;
-      gothicCompRef.current.rotation.y = THREE.MathUtils.lerp(
-        gothicCompRef.current.rotation.y,
-        targetRotY,
-        0.08,
-      );
-      gothicCompRef.current.rotation.z = THREE.MathUtils.lerp(
-        gothicCompRef.current.rotation.z,
-        targetRotZ,
-        0.08,
-      );
-      return;
-    }
 
     if (p <= SCROLL_MARKERS.HERO_END) {
       let localP = mapRange(p, 0, SCROLL_MARKERS.HERO_END, 0, 1);
