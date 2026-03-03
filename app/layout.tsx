@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Cinzel } from "next/font/google";
 import { ThemeProvider } from "@/shared/components/providers";
 import "./globals.css";
 import { LenisScroll } from "@/shared/components/anims";
+import { Header, Footer, SocialSidebar } from "@/shared/components/layout";
 import { siteConfig } from "@/config/site-config";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -77,9 +78,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LenisScroll />
-          {children}
-          <Analytics />
+          <div className="min-h-screen flex flex-col">
+            <LenisScroll />
+            <Header />
+            <SocialSidebar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <Analytics />
+          </div>
         </ThemeProvider>
       </body>
     </html>

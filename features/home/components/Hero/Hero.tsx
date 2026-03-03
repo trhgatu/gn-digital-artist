@@ -42,7 +42,7 @@ export default function Hero() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
-      const xPos = (e.clientX / innerWidth - 0.5) * 2; // -1 to +1
+      const xPos = (e.clientX / innerWidth - 0.5) * 2;
       const yPos = (e.clientY / innerHeight - 0.5) * 2;
 
       qX(xPos * -30);

@@ -26,7 +26,7 @@ const SOCIALS = [
   },
 ];
 
-export default function SocialSidebar() {
+export const SocialSidebar = () => {
   return (
     <>
       <aside
@@ -78,4 +78,4 @@ export default function SocialSidebar() {
       </nav>
     </>
   );
-}
+};
