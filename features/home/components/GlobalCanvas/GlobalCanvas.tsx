@@ -17,6 +17,18 @@ import { InteractiveGothicBackground } from "../InteractiveGothicBackground";
 
 export function GlobalCanvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (isMobile) return null;
 
   return (
     <div className="fixed inset-0 z-0">
