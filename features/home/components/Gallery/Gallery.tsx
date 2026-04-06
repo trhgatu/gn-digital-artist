@@ -29,9 +29,20 @@ function GalleryRow({
 }: GalleryRowProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useGSAP(
     () => {
-      if (!sectionRef.current || !trackRef.current) return;
+      if (!sectionRef.current || !trackRef.current || isMobile) return;
 
       gsap.set(trackRef.current, { autoAlpha: 1 });
 
@@ -76,7 +87,7 @@ function GalleryRow({
         );
       }
     },
-    { scope: sectionRef },
+    { scope: sectionRef, dependencies: [isMobile] },
   );
 
   const trackPadding = isReverse
@@ -86,7 +97,9 @@ function GalleryRow({
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen w-full bg-transparent overflow-hidden"
+      className={`relative w-full bg-transparent overflow-hidden ${
+        isMobile ? "h-auto py-24" : "h-screen"
+      }`}
     >
       <style>{`
         .card-image-wrap {
@@ -117,46 +130,59 @@ function GalleryRow({
       </div>
       <div
         ref={trackRef}
-        className={`invisible flex h-full w-max items-center ${trackPadding} gap-16 md:gap-32`}
+        className={`${
+          isMobile
+            ? "flex flex-col px-8"
+            : "invisible flex h-full w-max items-center " + trackPadding
+        } gap-16 md:gap-32`}
       >
-        {!isReverse && (
-          <div className="relative z-30 flex flex-col justify-center h-full w-[80vw] md:w-[40vw] shrink-0">
-            <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
-              {subtitle}
-            </h2>
-            <h3 className="text-5xl md:text-8xl font-cinzel text-neutral-200 uppercase drop-shadow-2xl">
-              {title.split(" ").map((word, i) => (
-                <span key={i} className="block">
-                  {word}
-                </span>
-              ))}
-            </h3>
-          </div>
-        )}
+        <div
+          className={`relative z-30 flex flex-col justify-center h-full shrink-0 ${
+            isMobile ? "w-full mb-12" : "w-[80vw] md:w-[40vw]"
+          } ${isReverse && !isMobile ? "items-end text-right" : ""}`}
+        >
+          <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
+            {subtitle}
+          </h2>
+          <h3
+            className={`text-5xl md:text-8xl font-cinzel text-neutral-200 uppercase drop-shadow-2xl`}
+          >
+            {title.split(" ").map((word, i) => (
+              <span
+                key={i}
+                className={isMobile ? "inline-block mr-4" : "block"}
+              >
+                {word}
+              </span>
+            ))}
+          </h3>
+        </div>
 
-        <div className="flex h-[90vh] items-center gap-8 md:gap-24">
+        <div
+          className={`flex ${isMobile ? "flex-col h-auto" : "h-[90vh] items-center"} gap-8 md:gap-24`}
+        >
           {items.map((project, i) => {
-            let heightClass = "h-[75vh]";
-            let widthClass = "w-[75vw] md:w-[50vw]";
-            let sizesStr = "(max-width: 768px) 75vw, 50vw";
+            let heightClass = isMobile ? "h-[60vh]" : "h-[75vh]";
+            let widthClass = isMobile ? "w-full" : "w-[75vw] md:w-[50vw]";
+            let sizesStr = "(max-width: 768px) 100vw, 50vw";
             if (project.size === "large") {
-              heightClass = "h-[88vh]";
-              widthClass = "w-[90vw] md:w-[60vw]";
-              sizesStr = "(max-width: 768px) 90vw, 60vw";
+              heightClass = isMobile ? "h-[70vh]" : "h-[88vh]";
+              widthClass = isMobile ? "w-full" : "w-[90vw] md:w-[60vw]";
+              sizesStr = "(max-width: 768px) 100vw, 60vw";
             }
             if (project.size === "small") {
-              heightClass = "h-[65vh]";
-              widthClass = "w-[60vw] md:w-[38vw]";
-              sizesStr = "(max-width: 768px) 60vw, 38vw";
+              heightClass = isMobile ? "h-[50vh]" : "h-[65vh]";
+              widthClass = isMobile ? "w-full" : "w-[60vw] md:w-[38vw]";
+              sizesStr = "(max-width: 768px) 100vw, 38vw";
             }
 
             const yOffsets = ["self-start", "self-center", "self-end"];
-            const randomAlign = yOffsets[i % yOffsets.length];
+            const randomAlign = isMobile ? "" : yOffsets[i % yOffsets.length];
 
             return (
               <div
                 key={project.id}
-                className={`gallery-card card-glow relative z-30 shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign}`}
+                className={`gallery-card card-glow relative z-30 shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign} ${isMobile ? "mb-16" : ""}`}
               >
                 <div className="card-image-wrap relative w-full h-full">
                   <Image
@@ -182,7 +208,7 @@ function GalleryRow({
           })}
         </div>
 
-        {isReverse && (
+        {isReverse && !isMobile && (
           <div className="relative z-30 flex flex-col items-end text-right justify-center h-full w-[80vw] md:w-[40vw] shrink-0">
             <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
               {subtitle}
