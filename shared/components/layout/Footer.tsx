@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
 export const Footer = () => (
   <footer className="w-full bg-[#050505] border-t border-neutral-900 text-white font-serif relative overflow-hidden py-24 px-8 lg:px-16">
     <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.03] mix-blend-overlay bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" />
-    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 relative z-10">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 relative z-10">
       <div className="flex flex-col gap-6 lg:border-r border-neutral-900 lg:pr-8">
         <h2 className="text-6xl md:text-8xl font-bold italic tracking-tighter">
           GN.

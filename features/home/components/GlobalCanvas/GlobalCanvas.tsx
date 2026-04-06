@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, Suspense } from "react";
+import React, { useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import {
@@ -69,15 +69,32 @@ export function GlobalCanvas() {
               environmentIntensity={0.05}
             />
 
-            <EffectComposer multisampling={4}>
-              <Noise
-                opacity={0.6}
-                premultiply
-                blendFunction={BlendFunction.OVERLAY}
-              />
-              <Vignette eskil={false} offset={0.15} darkness={1.2} />
-              <ChromaticAberration offset={new THREE.Vector2(0.0015, 0.0015)} />
-            </EffectComposer>
+            {typeof window !== "undefined" && (
+              <EffectComposer multisampling={window.innerWidth < 768 ? 0 : 4}>
+                {[
+                  <Noise
+                    key="noise"
+                    opacity={window.innerWidth < 768 ? 0.4 : 0.6}
+                    premultiply
+                    blendFunction={BlendFunction.OVERLAY}
+                  />,
+                  <Vignette
+                    key="vignette"
+                    eskil={false}
+                    offset={0.15}
+                    darkness={1.2}
+                  />,
+                  window.innerWidth >= 768 ? (
+                    <ChromaticAberration
+                      key="chroma"
+                      offset={new THREE.Vector2(0.0015, 0.0015)}
+                    />
+                  ) : (
+                    <React.Fragment key="chroma-placeholder" />
+                  ),
+                ]}
+              </EffectComposer>
+            )}
           </Suspense>
         </Canvas>
       </div>

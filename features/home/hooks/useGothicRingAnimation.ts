@@ -118,26 +118,28 @@ export function useGothicRingAnimation(
     let targetRotZ = RING_STAGES.HERO.ROT_Z;
 
     if (p <= SCROLL_MARKERS.HERO_END) {
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
       let localP = mapRange(p, 0, SCROLL_MARKERS.HERO_END, 0, 1);
       localP = THREE.MathUtils.clamp(localP, 0, 1);
       const smoothP = THREE.MathUtils.smoothstep(localP, 0, 1);
 
       targetX = THREE.MathUtils.lerp(
         RING_STAGES.HERO.X,
-        RING_STAGES.ABOUT.X,
+        isMobile ? 0 : RING_STAGES.ABOUT.X,
         smoothP,
       );
       targetY = THREE.MathUtils.lerp(
         RING_STAGES.HERO.Y,
-        RING_STAGES.ABOUT.Y,
+        isMobile ? 1.5 : RING_STAGES.ABOUT.Y,
         smoothP,
       );
       targetScale = THREE.MathUtils.lerp(
-        RING_STAGES.HERO.SCALE,
-        RING_STAGES.ABOUT.SCALE,
+        isMobile ? 0.25 : RING_STAGES.HERO.SCALE,
+        isMobile ? 0.5 : RING_STAGES.ABOUT.SCALE,
         smoothP,
       );
     } else if (p <= SCROLL_MARKERS.ABOUT_END) {
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
       let localP = mapRange(
         p,
         SCROLL_MARKERS.HERO_END,
@@ -148,15 +150,28 @@ export function useGothicRingAnimation(
       localP = THREE.MathUtils.clamp(localP, 0, 1);
       const smoothP = THREE.MathUtils.smoothstep(localP, 0, 1);
 
-      targetX = THREE.MathUtils.lerp(RING_STAGES.ABOUT.X, 0, smoothP);
-      targetY = THREE.MathUtils.lerp(RING_STAGES.ABOUT.Y, 4, smoothP);
+      targetX = THREE.MathUtils.lerp(
+        isMobile ? 0 : RING_STAGES.ABOUT.X,
+        0,
+        smoothP,
+      );
+      targetY = THREE.MathUtils.lerp(
+        isMobile ? 1.5 : RING_STAGES.ABOUT.Y,
+        4,
+        smoothP,
+      );
       targetZ = THREE.MathUtils.lerp(RING_STAGES.ABOUT.Z, -2, smoothP);
-      targetScale = THREE.MathUtils.lerp(RING_STAGES.ABOUT.SCALE, 0, smoothP);
+      targetScale = THREE.MathUtils.lerp(
+        isMobile ? 0.5 : RING_STAGES.ABOUT.SCALE,
+        isMobile ? 0.2 : 0,
+        smoothP,
+      );
     } else if (p <= SCROLL_MARKERS.GALLERY_ROW_3_END) {
-      targetScale = 0;
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+      targetScale = isMobile ? 0.2 : 0;
       targetX = 0;
-      targetY = 4;
-      targetZ = -2;
+      targetY = isMobile ? -1 : 4;
+      targetZ = isMobile ? -8 : -2;
     } else {
       let localP = mapRange(
         p,
