@@ -93,12 +93,29 @@ export const InteractiveGothicBackground = () => {
 
   useFrame((state) => {
     if (shaderRef.current) {
-      const targetX = (state.pointer.x + 1.0) / 2.0;
-      const targetY = (state.pointer.y + 1.0) / 2.0;
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+      let targetX, targetY;
+
+      if (isMobile) {
+        // Auto-floating effect for mobile to keep it alive
+        const time = state.clock.elapsedTime * 0.5;
+        targetX = 0.5 + Math.cos(time) * 0.2;
+        targetY = 0.5 + Math.sin(time * 0.8) * 0.2;
+
+        // If there's an active touch, override with pointer
+        if (state.pointer.x !== 0 || state.pointer.y !== 0) {
+          targetX = (state.pointer.x + 1.0) / 2.0;
+          targetY = (state.pointer.y + 1.0) / 2.0;
+        }
+      } else {
+        targetX = (state.pointer.x + 1.0) / 2.0;
+        targetY = (state.pointer.y + 1.0) / 2.0;
+      }
+
       currentMouse.current.lerpVectors(
         currentMouse.current,
         new THREE.Vector2(targetX, targetY),
-        0.05,
+        isMobile ? 0.03 : 0.05,
       );
 
       shaderRef.current.uniforms.uMouse.value.copy(currentMouse.current);

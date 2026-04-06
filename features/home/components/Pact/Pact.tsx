@@ -13,46 +13,49 @@ const tiers = [
   {
     id: "sketch-monster",
     name: "Sketch Design Monster",
+    category: "monster",
     description:
-      "Exclusive to the demonic and the monstrous. A clean, full-body character sketch accompanied by detailed marginalia and lore notes.",
+      "Exclusive to demons and monsters. A clean full-body sketch featuring a single character subject, complete with marginalia and character lore notes.",
     features: [
       "Clean & polished digital sketch",
-      "Full-body monster/demon design",
-      "Path: Semi-Human OR Non-Human",
+      "Full-body character subject",
       "2 Full-demo revisions included",
-      "Price scales with complexity",
+      "Choice of: Semi-Human OR Non-Human",
+      "Price adjusts based on detail level",
     ],
-    price: "From $1,100",
+    price: "700k VND",
     image: "/assets/projects/monsters/asaktra.png",
   },
   {
     id: "sketch-gothic",
     name: "Sketch Design Gothic",
+    category: "des-gothic",
     description:
-      "Tailored for dark fantasy and Victorian aesthetics. Custom gothic dress designs for your Character or OC, fully realized in a clean sketch with marginalia.",
+      "Specialized in gothic dress designs for your character or OC. A clean full-body sketch featuring the subject, complete with marginalia and character lore notes.",
     features: [
       "Clean & polished digital sketch",
-      "Full-body gothic character/OC design",
-      "Custom outfits & architectural motifs",
+      "Full-body character/OC subject",
       "2 Full-demo revisions included",
-      "Price scales with complexity",
+      "Custom gothic outfit design",
+      "Price adjusts based on detail level",
     ],
-    price: "From $1,100",
+    price: "700k VND",
     image: "/assets/projects/des-gothic/dg6.png",
   },
   {
     id: "illustration",
     name: "Illustration",
+    category: "visual-char",
     description:
       "A fully realized summoning. Available in both Traditional (A4) and Digital media. Choose your crop for the perfect composition.",
     features: [
-      "Waist-up: $360 (Tradi) / $360 (Digi)",
-      "Halfbody: $450 (Tradi) / $450 (Digi)",
-      "Fullbody: $550 (Tradi) / $550 (Digi)",
+      "Waist-up: 460k (Tradi) / 460k (Digi)",
+      "Halfbody: 550k (Tradi) / 550k (Digi)",
+      "Fullbody: 650k (Tradi) / 650k (Digi)",
       "Highly detailed & atmospheric rendering",
       "Custom backgrounds & complex lighting",
     ],
-    price: "From $360",
+    price: "From 460k VND",
     image: "/assets/projects/visuals/kantel-board.png",
   },
 ];
@@ -150,7 +153,7 @@ export default function Pact() {
                 ))}
               </ul>
               <Link
-                href="#contact"
+                href={`/works?category=${tier.category}`}
                 className="w-full py-4 border border-neutral-800 text-center font-sans tracking-[0.3em] text-xs uppercase text-neutral-400 hover:text-white hover:border-[#8a0303] hover:bg-[#8a0303]/10 transition-all duration-300"
               >
                 Summon
