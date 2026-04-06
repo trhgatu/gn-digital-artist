@@ -98,16 +98,16 @@ export default function Pact() {
     <section
       ref={sectionRef}
       id="pact"
-      className="relative min-h-screen w-full bg-transparent py-32 px-8 lg:px-16 flex flex-col items-center justify-center"
+      className="relative min-h-screen w-full bg-transparent py-16 md:py-32 px-6 md:px-16 flex flex-col items-center justify-center"
     >
-      <div className="text-center mb-24 max-w-2xl relative z-10">
-        <h2 className="text-sm font-sans tracking-[0.4em] text-[#8a0303] uppercase mb-6">
+      <div className="text-center mb-12 md:mb-24 max-w-2xl relative z-10">
+        <h2 className="text-sm font-sans tracking-[0.4em] text-[#8a0303] uppercase mb-4 md:mb-6">
           The Pact
         </h2>
-        <h3 className="text-5xl md:text-7xl font-cinzel text-neutral-200 uppercase tracking-widest drop-shadow-2xl mb-8">
+        <h3 className="text-4xl md:text-7xl font-cinzel text-neutral-200 uppercase tracking-widest drop-shadow-2xl mb-6 md:mb-8">
           Commissions
         </h3>
-        <p className="text-neutral-400 font-sans text-sm leading-relaxed tracking-widest">
+        <p className="text-neutral-400 font-sans text-xs md:text-sm leading-relaxed tracking-widest px-4">
           Bind your vision to the canvas. Select a tier of manifestation and let
           the nightmare take form.
         </p>
@@ -122,7 +122,7 @@ export default function Pact() {
             }}
             className="group relative flex flex-col bg-[#080808] border border-neutral-900 overflow-hidden transition-all duration-700 hover:-translate-y-4 hover:border-[#8a0303]/50 hover:shadow-[0_0_40px_rgba(138,3,3,0.1)]"
           >
-            <div className="h-64 w-full relative overflow-hidden border-b border-neutral-900 grayscale group-hover:grayscale-0 transition-all duration-700">
+            <div className="h-48 md:h-64 w-full relative overflow-hidden border-b border-neutral-900 grayscale group-hover:grayscale-0 transition-all duration-700">
               <Image
                 width={200}
                 height={200}
@@ -132,21 +132,20 @@ export default function Pact() {
               />
               <div className="absolute inset-0 bg-linear-to-t from-[#080808] to-transparent" />
             </div>
-            <div className="flex flex-col grow p-8">
-              <h4 className="font-cinzel text-2xl text-neutral-200 mb-2 uppercase">
+            <div className="flex flex-col grow p-6 md:p-8">
+              <h4 className="font-cinzel text-xl md:text-2xl text-neutral-200 mb-2 uppercase">
                 {tier.name}
               </h4>
-              <p className="font-sans text-[#8a0303] text-lg tracking-widest mb-6 border-b border-neutral-900 pb-6">
+              <p className="font-sans text-[#8a0303] text-base md:text-lg tracking-widest mb-4 md:mb-6 border-b border-neutral-900 pb-4 md:pb-6">
                 {tier.price}
               </p>
 
-              <p className="text-neutral-500 font-sans text-xs leading-relaxed tracking-widest mb-8 min-h-16">
+              <p className="text-neutral-500 font-sans text-[10px] md:text-xs leading-relaxed tracking-widest mb-6 md:mb-8 min-h-12 md:min-h-16">
                 {tier.description}
               </p>
-
-              <ul className="flex flex-col gap-3 font-sans text-xs tracking-widest text-neutral-400 uppercase mb-12 grow">
+              <ul className="flex flex-col gap-2 md:gap-3 font-sans text-[10px] md:text-xs tracking-widest text-neutral-400 uppercase mb-8 md:mb-12 grow">
                 {tier.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
+                  <li key={i} className="flex items-start gap-2 md:gap-3">
                     <span className="text-[#8a0303] mt-px">⨯</span>
                     <span>{feature}</span>
                   </li>
@@ -154,7 +153,7 @@ export default function Pact() {
               </ul>
               <Link
                 href={`/works?category=${tier.category}`}
-                className="w-full py-4 border border-neutral-800 text-center font-sans tracking-[0.3em] text-xs uppercase text-neutral-400 hover:text-white hover:border-[#8a0303] hover:bg-[#8a0303]/10 transition-all duration-300"
+                className="w-full py-3 md:py-4 border border-neutral-800 text-center font-sans tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-xs uppercase text-neutral-400 hover:text-white hover:border-[#8a0303] hover:bg-[#8a0303]/10 transition-all duration-300"
               >
                 Summon
               </Link>

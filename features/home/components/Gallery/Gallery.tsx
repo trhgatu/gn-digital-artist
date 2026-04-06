@@ -29,9 +29,11 @@ function GalleryRow({
 }: GalleryRowProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [hasMounted, setHasMounted] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
+    setHasMounted(true);
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -42,9 +44,8 @@ function GalleryRow({
 
   useGSAP(
     () => {
-      if (!sectionRef.current || !trackRef.current || isMobile) return;
-
-      gsap.set(trackRef.current, { autoAlpha: 1 });
+      if (!sectionRef.current || !trackRef.current || isMobile || !hasMounted)
+        return;
 
       const getScrollWidth = () =>
         Math.max(0, trackRef.current!.scrollWidth - window.innerWidth);
@@ -87,9 +88,76 @@ function GalleryRow({
         );
       }
     },
-    { scope: sectionRef, dependencies: [isMobile] },
+    { scope: sectionRef, dependencies: [isMobile, hasMounted] },
   );
 
+  if (!hasMounted) return null;
+
+  // --- MOBILE VERSION (Vertical List) ---
+  if (isMobile) {
+    return (
+      <section className="relative w-full py-24 px-8 bg-transparent">
+        {/* Background Texture */}
+        <div className="absolute inset-0 -z-10 pointer-events-none opacity-10">
+          <Image
+            src="/assets/images/gothic-background.jpg"
+            alt="Gothic Texture"
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        {/* Title Section */}
+        <div className="mb-16">
+          <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
+            {subtitle}
+          </h2>
+          <h3 className="text-5xl font-cinzel text-neutral-200 uppercase">
+            {title.split(" ").map((word, i) => (
+              <span key={i} className="inline-block mr-4">
+                {word}
+              </span>
+            ))}
+          </h3>
+        </div>
+
+        {/* Vertical List of Items */}
+        <div className="flex flex-col gap-20">
+          {items.slice(0, 4).map((project) => (
+            <div key={project.id} className="flex flex-col group">
+              <div
+                className={`relative w-full card-glow overflow-hidden ${
+                  project.size === "large"
+                    ? "h-[50vh]"
+                    : project.size === "small"
+                      ? "h-[35vh]"
+                      : "h-[42vh]"
+                }`}
+              >
+                <Image
+                  src={project.src}
+                  alt={project.title}
+                  fill
+                  sizes="100vw"
+                  className="object-contain grayscale hover:grayscale-0 transition-grayscale duration-700"
+                />
+              </div>
+              <div className="mt-3">
+                <span className="text-xs font-sans tracking-[0.2em] text-[#8a0303] uppercase">
+                  {project.category.replace("-", " ")}
+                </span>
+                <p className="text-2xl font-cinzel text-neutral-300 mt-1">
+                  {project.title}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // --- DESKTOP VERSION (Horizontal Scroll & Pinning) ---
   const trackPadding = isReverse
     ? "pl-[20vw] pr-[10vw]"
     : "pl-[10vw] pr-[20vw]";
@@ -97,9 +165,7 @@ function GalleryRow({
   return (
     <section
       ref={sectionRef}
-      className={`relative w-full bg-transparent overflow-hidden ${
-        isMobile ? "h-auto py-24" : "h-screen"
-      }`}
+      className="relative w-full h-screen bg-transparent overflow-hidden"
     >
       <style>{`
         .card-image-wrap {
@@ -130,66 +196,54 @@ function GalleryRow({
       </div>
       <div
         ref={trackRef}
-        className={`${
-          isMobile
-            ? "flex flex-col px-8"
-            : "invisible flex h-full w-max items-center " + trackPadding
-        } gap-16 md:gap-32`}
+        className={`flex h-full w-max items-center ${trackPadding} gap-32`}
       >
         <div
-          className={`relative z-30 flex flex-col justify-center h-full shrink-0 ${
-            isMobile ? "w-full mb-12" : "w-[80vw] md:w-[40vw]"
-          } ${isReverse && !isMobile ? "items-end text-right" : ""}`}
+          className={`relative z-30 flex flex-col justify-center h-full shrink-0 w-[40vw] ${
+            isReverse ? "items-end text-right" : ""
+          }`}
         >
           <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
             {subtitle}
           </h2>
-          <h3
-            className={`text-5xl md:text-8xl font-cinzel text-neutral-200 uppercase drop-shadow-2xl`}
-          >
+          <h3 className="text-8xl font-cinzel text-neutral-200 uppercase drop-shadow-2xl">
             {title.split(" ").map((word, i) => (
-              <span
-                key={i}
-                className={isMobile ? "inline-block mr-4" : "block"}
-              >
+              <span key={i} className="block">
                 {word}
               </span>
             ))}
           </h3>
         </div>
 
-        <div
-          className={`flex ${isMobile ? "flex-col h-auto" : "h-[90vh] items-center"} gap-8 md:gap-24`}
-        >
+        <div className="flex h-[90vh] items-center gap-24">
           {items.map((project, i) => {
-            let heightClass = isMobile ? "h-[60vh]" : "h-[75vh]";
-            let widthClass = isMobile ? "w-full" : "w-[75vw] md:w-[50vw]";
-            let sizesStr = "(max-width: 768px) 100vw, 50vw";
-            if (project.size === "large") {
-              heightClass = isMobile ? "h-[70vh]" : "h-[88vh]";
-              widthClass = isMobile ? "w-full" : "w-[90vw] md:w-[60vw]";
-              sizesStr = "(max-width: 768px) 100vw, 60vw";
-            }
-            if (project.size === "small") {
-              heightClass = isMobile ? "h-[50vh]" : "h-[65vh]";
-              widthClass = isMobile ? "w-full" : "w-[60vw] md:w-[38vw]";
-              sizesStr = "(max-width: 768px) 100vw, 38vw";
-            }
+            const heightClass =
+              project.size === "large"
+                ? "h-[88vh]"
+                : project.size === "small"
+                  ? "h-[65vh]"
+                  : "h-[75vh]";
+            const widthClass =
+              project.size === "large"
+                ? "w-[60vw]"
+                : project.size === "small"
+                  ? "w-[38vw]"
+                  : "w-[50vw]";
 
             const yOffsets = ["self-start", "self-center", "self-end"];
-            const randomAlign = isMobile ? "" : yOffsets[i % yOffsets.length];
+            const desktopAlign = yOffsets[i % yOffsets.length];
 
             return (
               <div
                 key={project.id}
-                className={`gallery-card card-glow relative z-30 shrink-0 flex flex-col group ${heightClass} ${widthClass} ${randomAlign} ${isMobile ? "mb-16" : ""}`}
+                className={`gallery-card card-glow relative z-30 shrink-0 flex flex-col group ${heightClass} ${widthClass} ${desktopAlign}`}
               >
                 <div className="card-image-wrap relative w-full h-full">
                   <Image
                     src={project.src}
                     alt={project.title}
                     fill
-                    sizes={sizesStr}
+                    sizes="50vw"
                     priority={i < 2}
                     className="object-contain grayscale hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-[1.02] drop-shadow-2xl"
                   />
@@ -208,12 +262,12 @@ function GalleryRow({
           })}
         </div>
 
-        {isReverse && !isMobile && (
-          <div className="relative z-30 flex flex-col items-end text-right justify-center h-full w-[80vw] md:w-[40vw] shrink-0">
+        {isReverse && (
+          <div className="relative z-30 flex flex-col items-end text-right justify-center h-full w-[40vw] shrink-0">
             <h2 className="text-sm font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-4">
               {subtitle}
             </h2>
-            <h3 className="text-5xl md:text-8xl font-cinzel text-neutral-200 uppercase drop-shadow-2xl">
+            <h3 className="text-8xl font-cinzel text-neutral-200 uppercase drop-shadow-2xl">
               {title.split(" ").map((word, i) => (
                 <span key={i} className="block">
                   {word}
