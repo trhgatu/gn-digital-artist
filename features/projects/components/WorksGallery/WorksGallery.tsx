@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Suspense } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { projects, ProjectCategory, Project } from "@/shared/data/projects";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { IconX } from "@tabler/icons-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,8 +21,15 @@ const filters: { label: string; value: FilterType }[] = [
   { label: "Visuals & Char", value: "visual-char" },
 ];
 
-export const WorksGallery = () => {
-  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+const GalleryContent = () => {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category") as FilterType | null;
+
+  const [activeFilter, setActiveFilter] = useState<FilterType>(
+    categoryParam && filters.some((f) => f.value === categoryParam)
+      ? categoryParam
+      : "all",
+  );
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -136,33 +146,70 @@ export const WorksGallery = () => {
           );
         })}
       </div>
-      {selectedProject && (
-        <div
-          className="fixed inset-0 z-9999 flex items-center justify-center bg-black/95 p-4 md:p-12 cursor-zoom-out"
-          onClick={() => setSelectedProject(null)}
-        >
-          <div
-            className="relative w-full h-full max-w-7xl max-h-[90vh] cursor-default flex items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-12 cursor-zoom-out"
+            onClick={() => setSelectedProject(null)}
           >
-            <button
-              className="absolute top-4 right-4 md:top-8 md:right-8 text-white/70 hover:text-white text-4xl md:text-5xl transition-colors z-10000 p-4 bg-black/50 hover:bg-black/80 rounded-full backdrop-blur-sm"
-              onClick={() => setSelectedProject(null)}
-              title="Close"
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{
+                type: "spring",
+                damping: 25,
+                stiffness: 200,
+              }}
+              className="relative w-full h-full max-w-5xl max-h-[85vh] cursor-default flex flex-col items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
             >
-              &times;
-            </button>
-            <Image
-              src={selectedProject.src}
-              alt={selectedProject.title}
-              fill
-              className="object-contain"
-              priority
-              sizes="100vw"
-            />
-          </div>
-        </div>
-      )}
+              <button
+                className="absolute -top-12 right-0 md:-right-12 md:top-0 text-white/50 hover:text-[#ff1a1a] transition-all duration-300 z-10000 p-2 hover:rotate-90"
+                onClick={() => setSelectedProject(null)}
+                title="Close"
+              >
+                <IconX size={32} stroke={1.5} />
+              </button>
+
+              <div className="relative w-full h-full shadow-[0_0_100px_rgba(138,3,3,0.2)] border border-white/5 bg-black/20">
+                <Image
+                  src={selectedProject.src}
+                  alt={selectedProject.title}
+                  fill
+                  className="object-contain"
+                  priority
+                  sizes="100vw"
+                />
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="absolute bottom-[-60px] left-0 w-full text-center pointer-events-none"
+              >
+                <p className="text-[10px] font-sans tracking-[0.4em] text-[#8a0303] uppercase mb-1">
+                  {selectedProject.category.replace("-", " ")}
+                </p>
+                <h4 className="text-2xl font-cinzel text-neutral-200 tracking-widest uppercase">
+                  {selectedProject.title}
+                </h4>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
+
+export const WorksGallery = () => (
+  <Suspense fallback={<div className="min-h-screen bg-black" />}>
+    <GalleryContent />
+  </Suspense>
+);

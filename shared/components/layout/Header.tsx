@@ -17,6 +17,12 @@ export const Header = () => {
           Works
         </Link>
         <Link
+          href="/tos"
+          className="text-neutral-400 hover:text-white transition-colors"
+        >
+          TOS
+        </Link>
+        <Link
           href="#contact"
           className="text-neutral-400 hover:text-white transition-colors"
         >

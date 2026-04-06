@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
+import { usePathname } from "next/navigation";
 
 export const LenisScroll = () => {
+  const pathname = usePathname();
+  const lenisRef = useRef<Lenis | null>(null);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +18,8 @@ export const LenisScroll = () => {
       wheelMultiplier: 1,
       smoothWheel: true,
     });
+
+    lenisRef.current = lenis;
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -27,8 +33,15 @@ export const LenisScroll = () => {
     return () => {
       gsap.ticker.remove(updateLenis);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+  }, [pathname]);
 
   return null;
 };

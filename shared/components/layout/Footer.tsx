@@ -11,11 +11,8 @@ const year = new Date().getFullYear();
 
 export const Footer = () => (
   <footer className="w-full bg-[#050505] border-t border-neutral-900 text-white font-serif relative overflow-hidden py-24 px-8 lg:px-16">
-    {/* Background noise texture */}
     <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.03] mix-blend-overlay bg-[url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Dissolve_Noise_Texture.png')]" />
-
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 relative z-10">
-      {/* Logo area */}
       <div className="flex flex-col gap-6 lg:border-r border-neutral-900 lg:pr-8">
         <h2 className="text-6xl md:text-8xl font-bold italic tracking-tighter">
           GN.
@@ -24,8 +21,6 @@ export const Footer = () => (
           Digital Artist specializing in inking and horrific creatures.
         </p>
       </div>
-
-      {/* Navigation */}
       <div className="flex flex-col gap-6">
         <h3 className="text-sm tracking-[0.3em] text-neutral-400 uppercase">
           Explore
@@ -33,9 +28,8 @@ export const Footer = () => (
         <div className="flex flex-col gap-4">
           {[
             { name: "Home", href: "/" },
-            { name: "Projects", href: "/projects" },
-            { name: "Timeline", href: "/about" },
-            { name: "About me", href: "/contact" },
+            { name: "Works", href: "/works" },
+            { name: "Terms of Service", href: "/tos" },
           ].map((item) => (
             <Link
               key={item.name}
@@ -47,15 +41,13 @@ export const Footer = () => (
           ))}
         </div>
       </div>
-
-      {/* Socials */}
       <div className="flex flex-col gap-6">
         <h3 className="text-sm tracking-[0.3em] text-neutral-400 uppercase">
           Connect
         </h3>
         <div className="flex gap-6">
           <Link
-            href="mailto:contact@trhgatu.dev"
+            href="mailto:henn25854@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Email"
@@ -73,7 +65,7 @@ export const Footer = () => (
             <IconBrandFacebook stroke={1} size={24} />
           </Link>
           <Link
-            href="https://instagram.com/tu.trhgatu"
+            href="https://instagram.com/ginkomegane"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
