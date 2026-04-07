@@ -79,7 +79,7 @@ const GalleryContent = () => {
       <style>{`
         .card-image-wrap {
           transition: filter 0.7s ease;
-          will-change: filter;
+          will-change: filter, transform;
         }
         .card-glow .card-image-wrap {
           filter:
@@ -88,21 +88,33 @@ const GalleryContent = () => {
             drop-shadow(0 0 28px rgba(102, 0, 0, 0.2))
             drop-shadow(0 0 50px rgba(138, 3, 3, 0.1));
         }
-        .card-glow:hover .card-image-wrap {
-          filter:
-            drop-shadow(0 0 6px rgba(255, 0, 0, 0.9))
-            drop-shadow(0 0 16px rgba(161, 0, 0, 0.8))
-            drop-shadow(0 0 35px rgba(102, 0, 0, 0.6))
-            drop-shadow(0 0 70px rgba(138, 3, 3, 0.4))
-            drop-shadow(0 0 100px rgba(138, 3, 3, 0.25));
+
+        @media (max-width: 768px) {
+          .card-glow .card-image-wrap {
+            filter: drop-shadow(0 4px 8px rgba(138, 3, 3, 0.3));
+          }
+           .card-glow:hover .card-image-wrap {
+             filter: drop-shadow(0 4px 12px rgba(138, 3, 3, 0.5));
+           }
+        }
+
+        @media (min-width: 769px) {
+          .card-glow:hover .card-image-wrap {
+            filter:
+              drop-shadow(0 0 6px rgba(255, 0, 0, 0.9))
+              drop-shadow(0 0 16px rgba(161, 0, 0, 0.8))
+              drop-shadow(0 0 35px rgba(102, 0, 0, 0.6))
+              drop-shadow(0 0 70px rgba(138, 3, 3, 0.4))
+              drop-shadow(0 0 100px rgba(138, 3, 3, 0.25));
+          }
         }
       `}</style>
-      <div className="flex flex-wrap items-center justify-center gap-6 mb-16 md:mb-24 relative z-20">
+      <div className="flex flex-nowrap items-center md:justify-center gap-6 mb-8 md:mb-24 relative z-20 overflow-x-auto scrollbar-hide -mx-4 px-8 pb-4">
         {filters.map((filter) => (
           <button
             key={filter.value}
             onClick={() => setActiveFilter(filter.value)}
-            className={`text-xs md:text-sm font-sans tracking-[0.2em] uppercase transition-all duration-500 ${
+            className={`text-xs md:text-sm font-sans tracking-[0.2em] uppercase transition-all duration-500 whitespace-nowrap ${
               activeFilter === filter.value
                 ? "text-[#ff1a1a] drop-shadow-[0_0_8px_rgba(255,0,0,0.8)] scale-110"
                 : "text-neutral-500 hover:text-neutral-300"
@@ -114,7 +126,7 @@ const GalleryContent = () => {
       </div>
       <div
         ref={gridRef}
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-x-12 md:gap-y-16 relative z-20"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-x-12 md:gap-y-16 relative z-20"
       >
         {filteredProjects.map((project) => {
           return (
@@ -128,17 +140,17 @@ const GalleryContent = () => {
                   src={project.src}
                   alt={project.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                   className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-10 transition-opacity duration-500" />
               </div>
 
-              <div className="mt-6 flex flex-col">
-                <span className="text-[10px] font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-2">
+              <div className="mt-4 md:mt-6 flex flex-col">
+                <span className="text-[8px] md:text-[10px] font-sans tracking-[0.3em] text-[#8a0303] uppercase mb-1 md:mb-2 text-center md:text-left">
                   {project.category.replace("-", " ")}
                 </span>
-                <span className="text-2xl font-cinzel text-neutral-300 group-hover:text-white transition-colors duration-300">
+                <span className="text-lg md:text-2xl font-cinzel text-neutral-300 group-hover:text-white transition-colors duration-300 text-center md:text-left leading-tight">
                   {project.title}
                 </span>
               </div>
@@ -153,7 +165,7 @@ const GalleryContent = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-12 cursor-zoom-out"
+            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/95 backdrop-blur-md md:backdrop-blur-2xl p-4 md:p-12 cursor-zoom-out"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
@@ -165,15 +177,15 @@ const GalleryContent = () => {
                 damping: 25,
                 stiffness: 200,
               }}
-              className="relative w-full h-full max-w-5xl max-h-[85vh] cursor-default flex flex-col items-center justify-center"
+              className="relative w-full h-[70vh] md:h-full max-w-5xl max-h-[85vh] cursor-default flex flex-col items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                className="absolute -top-12 right-0 md:-right-12 md:top-0 text-white/50 hover:text-[#ff1a1a] transition-all duration-300 z-10000 p-2 hover:rotate-90"
+                className="absolute top-0 right-0 md:-right-12 md:top-0 text-white/50 hover:text-[#ff1a1a] transition-all duration-300 z-10000 p-4 md:p-2 hover:rotate-90"
                 onClick={() => setSelectedProject(null)}
                 title="Close"
               >
-                <IconX size={32} stroke={1.5} />
+                <IconX size={window.innerWidth < 768 ? 24 : 32} stroke={1.5} />
               </button>
 
               <div className="relative w-full h-full shadow-[0_0_100px_rgba(138,3,3,0.2)] border border-white/5 bg-black/20">
@@ -191,12 +203,12 @@ const GalleryContent = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="absolute bottom-[-60px] left-0 w-full text-center pointer-events-none"
+                className="absolute bottom-4 md:bottom-[-80px] left-0 w-full text-center pointer-events-none px-6 py-4 md:p-0 bg-black/40 md:bg-transparent backdrop-blur-md md:backdrop-blur-none"
               >
-                <p className="text-[10px] font-sans tracking-[0.4em] text-[#8a0303] uppercase mb-1">
+                <p className="text-[8px] md:text-[10px] font-sans tracking-[0.4em] text-[#8a0303] uppercase mb-1 drop-shadow-sm">
                   {selectedProject.category.replace("-", " ")}
                 </p>
-                <h4 className="text-2xl font-cinzel text-neutral-200 tracking-widest uppercase">
+                <h4 className="text-xl md:text-3xl font-cinzel text-neutral-200 tracking-widest uppercase drop-shadow-md">
                   {selectedProject.title}
                 </h4>
               </motion.div>
