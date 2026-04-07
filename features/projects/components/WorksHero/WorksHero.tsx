@@ -20,43 +20,12 @@ export const WorksHero = () => {
         ease: "power3.out",
       },
     );
-
-    const qX = gsap.quickTo(textTitleRef.current, "x", {
-      ease: "power2.out",
-      duration: 1,
-    });
-    const qY = gsap.quickTo(textTitleRef.current, "y", {
-      ease: "power2.out",
-      duration: 1,
-    });
-    const qRotY = gsap.quickTo(textTitleRef.current, "rotationY", {
-      ease: "power2.out",
-      duration: 1,
-    });
-    const qRotX = gsap.quickTo(textTitleRef.current, "rotationX", {
-      ease: "power2.out",
-      duration: 1,
-    });
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const xPos = (e.clientX / innerWidth - 0.5) * 2;
-      const yPos = (e.clientY / innerHeight - 0.5) * 2;
-
-      qX(xPos * -30);
-      qY(yPos * -20);
-      qRotY(xPos * 5);
-      qRotX(yPos * -5);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[80vh] md:h-screen w-full flex flex-col items-center justify-center overflow-hidden z-10 selection:bg-red-900"
+      className="relative h-[45vh] md:h-screen w-full flex flex-col items-center justify-end pb-12 md:justify-center md:pb-0 overflow-hidden z-10 selection:bg-red-900"
       style={{ perspective: "1000px" }}
     >
       <div className="absolute inset-x-0 bottom-0 top-0 -z-10 pointer-events-none">
@@ -67,24 +36,24 @@ export const WorksHero = () => {
 
       <div
         ref={textTitleRef}
-        className="relative z-20 flex flex-col w-full max-w-7xl mx-auto px-8 md:px-16 pointer-events-none items-center mt-[-10vh]"
+        className="relative z-20 flex flex-col w-full max-w-7xl mx-auto px-6 md:px-16 pointer-events-none items-center mt-0 md:mt-[-5vh]"
         style={{ mixBlendMode: "difference" }}
       >
-        <div className="flex gap-4 md:gap-8 items-center justify-center overflow-hidden">
-          <span className="text-5xl md:text-8xl lg:text-[10vw] font-cinzel text-neutral-200 uppercase drop-shadow-2xl leading-none">
+        <div className="flex gap-3 md:gap-8 items-center justify-center overflow-hidden flex-wrap md:flex-nowrap">
+          <span className="text-4xl sm:text-5xl md:text-8xl lg:text-[10vw] font-cinzel text-neutral-200 uppercase drop-shadow-2xl leading-none">
             THE
           </span>
           <span
-            className="text-5xl md:text-8xl lg:text-[10vw] font-cinzel text-transparent uppercase drop-shadow-2xl leading-none"
+            className="text-4xl sm:text-5xl md:text-8xl lg:text-[10vw] font-cinzel text-transparent uppercase drop-shadow-2xl leading-none"
             style={{
-              WebkitTextStroke: "2px rgba(255,255,255,0.9)",
+              WebkitTextStroke: "1px rgba(255,255,255,0.9)",
               filter: "drop-shadow(0 0 20px rgba(200,0,0,0.3))",
             }}
           >
             ARCHIVES
           </span>
         </div>
-        <p className="hero-subtitle mt-8 text-xs md:text-sm tracking-[0.4em] text-[#8a0303] uppercase font-sans">
+        <p className="hero-subtitle mt-3 md:mt-8 text-[10px] md:text-sm tracking-[0.3em] md:tracking-[0.4em] text-[#8a0303] uppercase font-sans text-center">
           A Collection of Dark Visions
         </p>
       </div>
