@@ -8,15 +8,20 @@ export const WorksHero = () => {
   const textTitleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
     const tl = gsap.timeline();
     tl.fromTo(
       textTitleRef.current,
-      { opacity: 0, scale: 0.9, filter: "blur(10px)" },
+      {
+        opacity: 0,
+        scale: isMobile ? 1 : 0.9,
+        filter: isMobile ? "blur(0px)" : "blur(10px)",
+      },
       {
         opacity: 1,
         scale: 1,
         filter: "blur(0px)",
-        duration: 2,
+        duration: isMobile ? 1 : 2,
         ease: "power3.out",
       },
     );
@@ -29,7 +34,7 @@ export const WorksHero = () => {
       style={{ perspective: "1000px" }}
     >
       <div className="absolute inset-x-0 bottom-0 top-0 -z-10 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] md:w-screen md:h-screen bg-[#8a0303]/10 blur-[100px] rounded-full mix-blend-screen" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-screen md:h-screen bg-[#8a0303]/10 blur-[60px] md:blur-[100px] rounded-full mix-blend-screen" />
         <div className="absolute inset-0 bg-linear-to-b from-[#050505] via-transparent to-[#050505]" />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)] opacity-20" />
       </div>

@@ -79,7 +79,7 @@ const GalleryContent = () => {
       <style>{`
         .card-image-wrap {
           transition: filter 0.7s ease;
-          will-change: filter;
+          will-change: filter, transform;
         }
         .card-glow .card-image-wrap {
           filter:
@@ -88,13 +88,25 @@ const GalleryContent = () => {
             drop-shadow(0 0 28px rgba(102, 0, 0, 0.2))
             drop-shadow(0 0 50px rgba(138, 3, 3, 0.1));
         }
-        .card-glow:hover .card-image-wrap {
-          filter:
-            drop-shadow(0 0 6px rgba(255, 0, 0, 0.9))
-            drop-shadow(0 0 16px rgba(161, 0, 0, 0.8))
-            drop-shadow(0 0 35px rgba(102, 0, 0, 0.6))
-            drop-shadow(0 0 70px rgba(138, 3, 3, 0.4))
-            drop-shadow(0 0 100px rgba(138, 3, 3, 0.25));
+
+        @media (max-width: 768px) {
+          .card-glow .card-image-wrap {
+            filter: drop-shadow(0 4px 8px rgba(138, 3, 3, 0.3));
+          }
+           .card-glow:hover .card-image-wrap {
+             filter: drop-shadow(0 4px 12px rgba(138, 3, 3, 0.5));
+           }
+        }
+
+        @media (min-width: 769px) {
+          .card-glow:hover .card-image-wrap {
+            filter:
+              drop-shadow(0 0 6px rgba(255, 0, 0, 0.9))
+              drop-shadow(0 0 16px rgba(161, 0, 0, 0.8))
+              drop-shadow(0 0 35px rgba(102, 0, 0, 0.6))
+              drop-shadow(0 0 70px rgba(138, 3, 3, 0.4))
+              drop-shadow(0 0 100px rgba(138, 3, 3, 0.25));
+          }
         }
       `}</style>
       <div className="flex flex-nowrap items-center md:justify-center gap-6 mb-8 md:mb-24 relative z-20 overflow-x-auto scrollbar-hide -mx-4 px-8 pb-4">
@@ -153,7 +165,7 @@ const GalleryContent = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 md:p-12 cursor-zoom-out"
+            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/95 backdrop-blur-md md:backdrop-blur-2xl p-4 md:p-12 cursor-zoom-out"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
